@@ -80,7 +80,8 @@ export function StickyVisualization({
   return (
     // This wrapper NEVER unmounts — it is the single persistent mount point.
     // React only updates children inside it; the node itself stays in the DOM.
-    <div data-testid="sticky-viz" style={{ position: 'sticky', top: 0 }}>
+    // Sticky positioning is handled by the parent .scrollytelling-viz-column in CSS.
+    <div data-testid="sticky-viz">
       {activeViz === 'line' ? (
         <LineChart
           data={nationalSeries}

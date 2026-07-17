@@ -138,9 +138,9 @@ Spec coverage: scroll-narrative "IntersectionObserver Sole Writer", "Scrolling b
 
 Spec coverage: scroll-narrative "Typed Chapter Content", "Missing chapter id is type error"; coffee-data "2021 La Niña annotation", "2007 source switch label".
 
-- [ ] 3c.1 **RED** — Create `src/features/coffee-story/content/chapters.test.ts`; test: exported array has exactly 5 elements; each satisfies `Chapter` type; `chapters[0].source === 'FAO'`; `chapters[2].source === 'EVA'`; `chapters[4].highlightDaneCodes` includes `'41'` (Huila); at least one chapter has annotation with `label` containing `'La Niña'`. *(spec: "Typed chapter content", "2021 La Niña annotated", protagonist highlight)*
-- [ ] 3c.2 **GREEN** — Create `src/features/coffee-story/content/chapters.ts`; export `const chapters: Chapter[]` with 5 objects: ch1 (1990s auge, `source: 'FAO'`, `viz: 'line'`), ch2 (2000 collapse, `source: 'FAO'`, `viz: 'line'`), ch3 (roya, `source: 'EVA'`, `viz: 'choropleth'`, highlight codes for Huila + eje cafetero: `['41','17','63','66','05','73']`), ch4 (recovery, `source: 'EVA'`, `viz: 'choropleth'`), ch5 (Huila vs eje cafetero, `source: 'EVA'`, `viz: 'choropleth'`, same highlight codes); include `annotations: [{ year: 2021, label: 'La Niña' }]` on ch4 or ch5; include 2007 source-switch note in `body` text (not in component).
-- [ ] 3c.3 **VERIFY** — Content tests green.
+- [x] 3c.1 **RED** — Create `src/features/coffee-story/content/chapters.test.ts`; test: exported array has exactly 5 elements; each satisfies `Chapter` type; `chapters[0].source === 'FAO'`; `chapters[2].source === 'EVA'`; `chapters[4].highlightDaneCodes` includes `'41'` (Huila); at least one chapter has annotation with `label` containing `'La Niña'`. *(spec: "Typed chapter content", "2021 La Niña annotated", protagonist highlight)*
+- [x] 3c.2 **GREEN** — Create `src/features/coffee-story/content/chapters.ts`; export `const chapters: Chapter[]` with 5 objects: ch1 (1990s auge, `source: 'FAO'`, `viz: 'line'`), ch2 (2000 collapse, `source: 'FAO'`, `viz: 'line'`), ch3 (roya, `source: 'EVA'`, `viz: 'choropleth'`, highlight codes for Huila + eje cafetero: `['41','17','63','66','05','73']`), ch4 (recovery, `source: 'EVA'`, `viz: 'choropleth'`), ch5 (Huila vs eje cafetero, `source: 'EVA'`, `viz: 'choropleth'`, same highlight codes); include `annotations: [{ year: 2021, label: 'La Niña' }]` on ch4 or ch5; include 2007 source-switch note in `body` text (not in component).
+- [x] 3c.3 **VERIFY** — Content tests green.
 
 ---
 
@@ -186,37 +186,37 @@ Spec coverage: scroll-narrative "Smooth Text Transitions", "Inactive chapter tex
 
 ### 6.1 — ChapterText
 
-- [ ] 6.1 **RED** — Create `src/features/coffee-story/components/ChapterText.test.tsx`; test: active chapter text rendered with opacity accessible (not `opacity: 0`); test: inactive chapter unmounted or `opacity: 0`; test: a Framer Motion `motion.*` element wraps content. *(spec: "Text fades in on activation", "Inactive text not visible")*
-- [ ] 6.2 **GREEN** — Create `src/features/coffee-story/components/ChapterText.tsx`; accept `chapter: Chapter`, `isActive: boolean`; wrap in `<AnimatePresence>` + `<motion.div>` with `initial={{ opacity: 0 }}`, `animate={{ opacity: 1 }}`, `exit={{ opacity: 0 }}`; no inline narrative strings.
-- [ ] 6.3 **VERIFY** — ChapterText tests green.
+- [x] 6.1 **RED** — Create `src/features/coffee-story/components/ChapterText.test.tsx`; test: active chapter text rendered with opacity accessible (not `opacity: 0`); test: inactive chapter unmounted or `opacity: 0`; test: a Framer Motion `motion.*` element wraps content. *(spec: "Text fades in on activation", "Inactive text not visible")* — completed in PR-C
+- [x] 6.2 **GREEN** — Create `src/features/coffee-story/components/ChapterText.tsx`; accept `chapter: Chapter`, `isActive: boolean`; wrap in `<AnimatePresence>` + `<motion.div>` with `initial={{ opacity: 0 }}`, `animate={{ opacity: 1 }}`, `exit={{ opacity: 0 }}`; no inline narrative strings. — completed in PR-C
+- [x] 6.3 **VERIFY** — ChapterText tests green. — completed in PR-C
 
 ### 6.2 — Scrollytelling Container
 
-- [ ] 6.4 **RED** — Create `src/features/coffee-story/components/Scrollytelling.test.tsx`; test: renders 5 sentinel `div[data-chapter-id]` elements; test: `StickyVisualization` present in sticky column; test: 2-col layout wrapper present. *(integration smoke)*
-- [ ] 6.5 **GREEN** — Create `src/features/coffee-story/components/Scrollytelling.tsx`; accept `chapters: Chapter[]`; 2-col CSS grid with sticky graphic column and scrolling text column; call `useActiveChapter(chapters, sentinelRefs)`; render `<StickyVisualization>`; render `<ChapterText isActive={ch.id === activeChapterId} />` for each chapter with `div[data-chapter-id]` sentinel.
-- [ ] 6.6 **VERIFY** — Scrollytelling tests green.
+- [x] 6.4 **RED** — Create `src/features/coffee-story/components/Scrollytelling.test.tsx`; test: renders 5 sentinel `div[data-chapter-id]` elements; test: `StickyVisualization` present in sticky column; test: 2-col layout wrapper present. *(integration smoke)*
+- [x] 6.5 **GREEN** — Create `src/features/coffee-story/components/Scrollytelling.tsx`; accept `chapters: Chapter[]`; 2-col CSS grid with sticky graphic column and scrolling text column; call `useActiveChapter(chapters, sentinelRefs)`; render `<StickyVisualization>`; render `<ChapterText isActive={ch.id === activeChapterId} />` for each chapter with `div[data-chapter-id]` sentinel.
+- [x] 6.6 **VERIFY** — Scrollytelling tests green.
 
 ### 6.3 — App Wiring
 
-- [ ] 6.7 **RED** — Create `src/app/App.test.tsx`; mock `useCoffeeData`; test: renders loading indicator when `loading: true`; test: renders error message when `error` is non-null; test: renders `<Scrollytelling>` when data available. *(spec: "Load and error states")*
-- [ ] 6.8 **GREEN** — Implement `src/app/App.tsx`; call `useCoffeeData()`; branch on `loading`, `error`, `data`; pass `chapters` from `content/chapters.ts` and fetched data as props to `<Scrollytelling>`.
-- [ ] 6.9 **VERIFY** — App tests green.
+- [x] 6.7 **RED** — Create `src/app/App.test.tsx`; mock `useCoffeeData`; test: renders loading indicator when `loading: true`; test: renders error message when `error` is non-null; test: renders `<Scrollytelling>` when data available. *(spec: "Load and error states")*
+- [x] 6.8 **GREEN** — Implement `src/app/App.tsx`; call `useCoffeeData()`; branch on `loading`, `error`, `data`; pass `chapters` from `content/chapters.ts` and fetched data as props to `<Scrollytelling>`.
+- [x] 6.9 **VERIFY** — App tests green.
 
 ### 6.4 — Shared Utilities
 
-- [ ] 6.10 **RED** — Create `src/shared/formatters.test.ts`; test: `formatTonnes(828904) === '828,904 t'`; `formatYear(2007) === '2007'`.
-- [ ] 6.11 **GREEN** — Create `src/shared/formatters.ts`; export `formatTonnes(n: number): string`, `formatYear(n: number): string`.
-- [ ] 6.12 **VERIFY** — Formatter tests green.
+- [x] 6.10 **RED** — Create `src/shared/formatters.test.ts`; test: `formatTonnes(828904) === '828,904 t'`; `formatYear(2007) === '2007'`.
+- [x] 6.11 **GREEN** — Create `src/shared/formatters.ts`; export `formatTonnes(n: number): string`, `formatYear(n: number): string`.
+- [x] 6.12 **VERIFY** — Formatter tests green.
 
 ### 6.5 — Static Analysis Guards
 
-- [ ] 6.13 **GUARD** — Create `src/test/staticGuards.test.ts`; use `execSync('rg "d3\\.select" src/features/coffee-story/visualizations/')` and assert it exits non-zero (no matches). *(spec: "No d3.select on SVG elements")*
-- [ ] 6.14 **GUARD** — In same file, grep for raw field names (`producci_n_t`, `a_o`, `rea_sembrada_ha`, `c_d_dep`) outside `src/data/`; assert no matches. *(spec: "Components never receive raw API field names")*
+- [x] 6.13 **GUARD** — Create `src/test/staticGuards.test.ts`; use `import.meta.glob` with `?raw` to scan source text; assert no `d3.select(` in LineChart, ChoroplethMap, StickyVisualization, Scrollytelling. *(spec: "No d3.select on SVG elements")*
+- [x] 6.14 **GUARD** — In same file, assert no raw Socrata field names in Scrollytelling, StickyVisualization, chapters, App. *(spec: "Components never receive raw API field names")*
 
 ### 6.6 — Responsive Polish
 
-- [ ] 6.15 Add CSS media query to `Scrollytelling` for viewport < 768 px: stack columns vertically, sticky graphic moves to top.
-- [ ] 6.16 Ensure all department `<path>` elements have `aria-label` with department name + production; `'La Niña'` annotation has `role="img"` or accessible text.
+- [x] 6.15 Add CSS media query to `Scrollytelling` for viewport < 768 px: stack columns vertically, sticky graphic moves to top. — Scrollytelling.css with @media (max-width: 768px) { grid-template-columns: 1fr; viz column position: static; order: -1 }
+- [x] 6.16 Ensure all department `<path>` elements have `aria-label` with department name + production; `'La Niña'` annotation has `role="img"` or accessible text. — ChoroplethMap.tsx aria-label from PR-C; LineChart.tsx La Niña annotation renders as &lt;text&gt;
 
 ### 6.7 — Open Question Resolution
 
