@@ -77,48 +77,48 @@ Spec coverage: coffee-data "Fetch-Once Cache", "Per-Dataset Coffee Filter Consta
 
 ### 3a.1 — Cache
 
-- [ ] 3.1 **RED** — Create `src/data/cache.test.ts`; mock `fetch`; test: second call to `fetchOnce(url)` resolves same data with `fetch` called exactly once; test: two different URLs → two fetch calls; test: two concurrent calls to same URL deduplicate to one in-flight. *(spec: "Second call returns cached result", "Cache keyed per dataset")*
-- [ ] 3.2 **GREEN** — Create `src/data/cache.ts`; export `createCache<T>()` returning `{ get(url, fetcher): Promise<T> }` backed by `Map<string, Promise<T>>`; store the promise (not resolved value) to deduplicate concurrent calls.
-- [ ] 3.3 **VERIFY** — Cache tests green.
+- [x] 3.1 **RED** — Create `src/data/cache.test.ts`; mock `fetch`; test: second call to `fetchOnce(url)` resolves same data with `fetch` called exactly once; test: two different URLs → two fetch calls; test: two concurrent calls to same URL deduplicate to one in-flight. *(spec: "Second call returns cached result", "Cache keyed per dataset")*
+- [x] 3.2 **GREEN** — Create `src/data/cache.ts`; export `createCache<T>()` returning `{ get(url, fetcher): Promise<T> }` backed by `Map<string, Promise<T>>`; store the promise (not resolved value) to deduplicate concurrent calls.
+- [x] 3.3 **VERIFY** — Cache tests green.
 
 ### 3a.2 — Socrata Client + Dataset Config
 
-- [ ] 3.4 **RED** — Create `src/data/socrata/client.test.ts`; test: fluent builder `.select('a_o').where("cultivo='CAFE'").limit(5000).toURL(base)` produces correct SoQL query string; test: `.fetchJson<T>()` calls `fetch` and returns parsed JSON. *(design contract)*
-- [ ] 3.5 **GREEN** — Create `src/data/socrata/client.ts`; export `socrataClient(baseUrl)` with fluent builder: `.select()`, `.where()`, `.group()`, `.order()`, `.limit()`, `.toURL()`, `.fetchJson<T>()`; delegate fetch to cache from 3.2.
-- [ ] 3.6 **RED** — Create `src/data/socrata/datasetConfig.test.ts`; test: `OLD_EVA_CULTIVO_FILTER === 'CAFE'` (3 chars, no diacritics); test: `NEW_EVA_CULTIVO_FILTER === 'Café'` (4 chars, accent); test: importing a config with empty `cultivoFilter` throws before any network call. *(spec: "Old dataset filter CAFE", "New dataset filter Café", "Non-empty assertion fires at module load")*
-- [ ] 3.7 **GREEN** — Create `src/data/socrata/datasetConfig.ts`; export `OLD_EVA_CULTIVO_FILTER = 'CAFE'`, `NEW_EVA_CULTIVO_FILTER = 'Café'`, `DatasetConfig` interface, `OLD_EVA_CONFIG` (endpoint `2pnw-mmge`, `cultivoFilter: 'CAFE'`, field map `{ year: 'a_o', production: 'producci_n_t', daneCode: 'c_d_dep' }`, yearRange `[2007, 2018]`), `NEW_EVA_CONFIG` (endpoint `uejq-wxrr`, `cultivoFilter: 'Café'`, field map to be confirmed, yearRange `[2019, 2024]`); guard: throw at module load if `cultivoFilter` is empty.
+- [x] 3.4 **RED** — Create `src/data/socrata/client.test.ts`; test: fluent builder `.select('a_o').where("cultivo='CAFE'").limit(5000).toURL(base)` produces correct SoQL query string; test: `.fetchJson<T>()` calls `fetch` and returns parsed JSON. *(design contract)*
+- [x] 3.5 **GREEN** — Create `src/data/socrata/client.ts`; export `socrataClient(baseUrl)` with fluent builder: `.select()`, `.where()`, `.group()`, `.order()`, `.limit()`, `.toURL()`, `.fetchJson<T>()`; delegate fetch to cache from 3.2.
+- [x] 3.6 **RED** — Create `src/data/socrata/datasetConfig.test.ts`; test: `OLD_EVA_CULTIVO_FILTER === 'CAFE'` (3 chars, no diacritics); test: `NEW_EVA_CULTIVO_FILTER === 'Café'` (4 chars, accent); test: importing a config with empty `cultivoFilter` throws before any network call. *(spec: "Old dataset filter CAFE", "New dataset filter Café", "Non-empty assertion fires at module load")*
+- [x] 3.7 **GREEN** — Create `src/data/socrata/datasetConfig.ts`; export `OLD_EVA_CULTIVO_FILTER = 'CAFE'`, `NEW_EVA_CULTIVO_FILTER = 'Café'`, `DatasetConfig` interface, `OLD_EVA_CONFIG` (endpoint `2pnw-mmge`, `cultivoFilter: 'CAFE'`, field map `{ year: 'a_o', production: 'producci_n_t', daneCode: 'c_d_dep' }`, yearRange `[2007, 2018]`), `NEW_EVA_CONFIG` (endpoint `uejq-wxrr`, `cultivoFilter: 'Café'`, field map to be confirmed, yearRange `[2019, 2024]`); guard: throw at module load if `cultivoFilter` is empty.
 
 ### 3a.3 — Socrata Adapter
 
-- [ ] 3.8 **RED** — Create `src/data/socrata/adapter.test.ts` with inline fixture raw rows (no network); test: `{ producci_n_t: '626798.0', a_o: '2012', c_d_dep: '41', cultivo: 'CAFE' }` through `socrataAdapter(rows, OLD_EVA_CONFIG)` → `production === 626798` (typeof number), `year === 2012` (number), `daneCode === '41'`. *(spec: "producci_n_t → number", "a_o → number", "Huila DANE code 41")*
-- [ ] 3.9 **RED** — Add fixture: `rea_sembrada_ha: '95432.5'` → `areaHarvested === 95432.5`. *(spec: "rea_sembrada_ha → number")*
-- [ ] 3.10 **RED** — Add fixture: wrong `cultivo: 'cafe'` (lowercase) → adapter throws with descriptive message, NOT returns empty array. *(spec: "Wrong coffee filter yields error")*
-- [ ] 3.11 **RED** — Add fixture: new-schema row with `cultivo: 'Café'` and `NEW_EVA_CONFIG` field names → correct mapping to `DepartmentProduction`. *(covers second EVA schema)*
-- [ ] 3.12 **GREEN** — Create `src/data/socrata/adapter.ts`; export `socrataAdapter(rawRows: RawRow[], config: DatasetConfig): DepartmentProduction[]`; apply field map per config; coerce all numeric fields with `Number()`; validate cultivo value, throw on mismatch.
-- [ ] 3.13 **VERIFY** — All adapter tests green.
+- [x] 3.8 **RED** — Create `src/data/socrata/adapter.test.ts` with inline fixture raw rows (no network); test: `{ producci_n_t: '626798.0', a_o: '2012', c_d_dep: '41', cultivo: 'CAFE' }` through `socrataAdapter(rows, OLD_EVA_CONFIG)` → `production === 626798` (typeof number), `year === 2012` (number), `daneCode === '41'`. *(spec: "producci_n_t → number", "a_o → number", "Huila DANE code 41")*
+- [x] 3.9 **RED** — Add fixture: `rea_sembrada_ha: '95432.5'` → `areaHarvested === 95432.5`. *(spec: "rea_sembrada_ha → number")*
+- [x] 3.10 **RED** — Add fixture: wrong `cultivo: 'cafe'` (lowercase) → adapter throws with descriptive message, NOT returns empty array. *(spec: "Wrong coffee filter yields error")*
+- [x] 3.11 **RED** — Add fixture: new-schema row with `cultivo: 'Café'` and `NEW_EVA_CONFIG` field names → correct mapping to `DepartmentProduction`. *(covers second EVA schema)*
+- [x] 3.12 **GREEN** — Create `src/data/socrata/adapter.ts`; export `socrataAdapter(rawRows: RawRow[], config: DatasetConfig): DepartmentProduction[]`; apply field map per config; coerce all numeric fields with `Number()`; validate cultivo value, throw on mismatch.
+- [x] 3.13 **VERIFY** — All adapter tests green.
 
 ### 3a.4 — Data Correctness (Fixture Sums)
 
-- [ ] 3.14 **RED** — Add to `adapter.test.ts` or new `src/data/socrata/dataIntegrity.test.ts`: fixture rows covering all departments for year 2007; assert `sum(production) ≈ 828904 ±1000`; fixture for 2012; assert `sum(production) ≈ 626798 ±1000`. *(spec: "2007 EVA peak ~828,904 t", "2012 roya trough ~626,798 t")*
-- [ ] 3.15 **VERIFY** — Data integrity tests green (no new impl required; adapter already handles this).
+- [x] 3.14 **RED** — Add to `adapter.test.ts` or new `src/data/socrata/dataIntegrity.test.ts`: fixture rows covering all departments for year 2007; assert `sum(production) ≈ 828904 ±1000`; fixture for 2012; assert `sum(production) ≈ 626798 ±1000`. *(spec: "2007 EVA peak ~828,904 t", "2012 roya trough ~626,798 t")*
+- [x] 3.15 **VERIFY** — Data integrity tests green (no new impl required; adapter already handles this).
 
 ### 3a.5 — FAO Adapter
 
-- [ ] 3.16 **RED** — Create `src/data/fao/faoAdapter.test.ts` with inline CSV fixture; test: year 1999 row → `production` within ±10,000 of 547,000; test: `Math.min(...series.map(d => d.year)) <= 1990`; test: returns `NationalSeries` (array of `YearDatum`). *(spec: "FAO 1999 trough", "FAO starts at 1990")*
-- [ ] 3.17 **GREEN** — Create `src/data/fao/faoAdapter.ts`; parse CSV text with `d3.csvParse`; filter Colombia rows; `Number()` coerce production; restrict to 1990–2006; return `NationalSeries`.
-- [ ] 3.18 **VERIFY** — FAO adapter tests green.
+- [x] 3.16 **RED** — Create `src/data/fao/faoAdapter.test.ts` with inline CSV fixture; test: year 1999 row → `production` within ±10,000 of 547,000; test: `Math.min(...series.map(d => d.year)) <= 1990`; test: returns `NationalSeries` (array of `YearDatum`). *(spec: "FAO 1999 trough", "FAO starts at 1990")*
+- [x] 3.17 **GREEN** — Create `src/data/fao/faoAdapter.ts`; parse CSV text with `d3.csvParse`; filter Colombia rows; `Number()` coerce production; restrict to 1990–2006; return `NationalSeries`.
+- [x] 3.18 **VERIFY** — FAO adapter tests green.
 
 ### 3a.6 — GeoJSON / TopoJSON Loader
 
-- [ ] 3.19 **RED** — Create `src/data/geo/colombiaGeoLoader.test.ts`; mock fetch returning minimal TopoJSON with features `{ DPTO_CCDGO: '41' }` and `{ DPTO_CCDGO: '63', DPTO_CNMBR: 'QUINDIO' }`; test: returned `FeatureCollection` exposes `DPTO_CCDGO` on features; test: feature with code `'41'` findable (Huila); test: Quindío join succeeds by code despite name `'QUINDIO'` vs `'QUINDÍO'`. *(spec: "Huila joins by DANE code 41", "Name mismatch does not break join")*
-- [ ] 3.20 **GREEN** — Create `src/data/geo/colombiaGeoLoader.ts`; fetch TopoJSON URL via cache; call `topojson.feature(topo, object)` to produce `FeatureCollection`; expose `DPTO_CCDGO` as primary join key; include NFD-normalize fallback on `DPTO_CNMBR`.
-- [ ] 3.21 **VERIFY** — Geo loader tests green.
+- [x] 3.19 **RED** — Create `src/data/geo/colombiaGeoLoader.test.ts`; mock fetch returning minimal TopoJSON with features `{ DPTO_CCDGO: '41' }` and `{ DPTO_CCDGO: '63', DPTO_CNMBR: 'QUINDIO' }`; test: returned `FeatureCollection` exposes `DPTO_CCDGO` on features; test: feature with code `'41'` findable (Huila); test: Quindío join succeeds by code despite name `'QUINDIO'` vs `'QUINDÍO'`. *(spec: "Huila joins by DANE code 41", "Name mismatch does not break join")*
+- [x] 3.20 **GREEN** — Create `src/data/geo/colombiaGeoLoader.ts`; fetch TopoJSON URL via cache; call `topojson.feature(topo, object)` to produce `FeatureCollection`; expose `DPTO_CCDGO` as primary join key; include NFD-normalize fallback on `DPTO_CNMBR`.
+- [x] 3.21 **VERIFY** — Geo loader tests green.
 
 ### 3a.7 — useCoffeeData Hook (Load / Error States)
 
-- [ ] 3.22 **RED** — Create `src/data/useCoffeeData.test.ts`; mock `fetch`; test: while fetch in-flight → `loading === true`, `data === null`; test: on 500 → `error` instanceof `Error`, `loading === false`, `data === null`; test: on success → returned object has `nationalSeries` and `departmentSeries` with no raw field names (`producci_n_t`, `a_o`, `rea_sembrada_ha`, `c_d_dep`). *(spec: "Loading state before resolve", "Error state on 500", "Components never see raw field names")*
-- [ ] 3.23 **GREEN** — Create `src/data/useCoffeeData.ts`; orchestrate parallel fetches (FAO + EVA old + EVA new + GeoJSON) via `Promise.all`; return `{ data: { nationalSeries, departmentSeries, geoFeatures } | null; loading: boolean; error: Error | null }`; never expose raw fields.
-- [ ] 3.24 **VERIFY** — useCoffeeData tests green; `npx vitest run src/data` — all green.
+- [x] 3.22 **RED** — Create `src/data/useCoffeeData.test.ts`; mock `fetch`; test: while fetch in-flight → `loading === true`, `data === null`; test: on 500 → `error` instanceof `Error`, `loading === false`, `data === null`; test: on success → returned object has `nationalSeries` and `departmentSeries` with no raw field names (`producci_n_t`, `a_o`, `rea_sembrada_ha`, `c_d_dep`). *(spec: "Loading state before resolve", "Error state on 500", "Components never see raw field names")*
+- [x] 3.23 **GREEN** — Create `src/data/useCoffeeData.ts`; orchestrate parallel fetches (FAO + EVA old + EVA new + GeoJSON) via `Promise.all`; return `{ data: { nationalSeries, departmentSeries, geoFeatures } | null; loading: boolean; error: Error | null }`; never expose raw fields.
+- [x] 3.24 **VERIFY** — useCoffeeData tests green; `npx vitest run src/data` — all green.
 
 ---
 
