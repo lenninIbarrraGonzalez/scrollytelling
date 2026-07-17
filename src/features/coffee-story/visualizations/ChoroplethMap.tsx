@@ -16,11 +16,21 @@
  *   highlightDaneCodes — DANE codes for protagonist departments (distinct stroke)
  *   geoPath           — D3 geoPath generator function
  *   width / height    — SVG viewport dimensions
+ *   domainExtent      — optional [min, max] production range for the color legend
  */
 
+import { useState, useRef } from 'react'
 import type { Feature, Geometry } from 'geojson'
 import type { GeoPath } from 'd3'
 import type { DepartmentGeoProperties } from '../../../domain/coffee'
+import { ColorLegend } from './ColorLegend'
+
+interface TipState {
+  x: number
+  y: number
+  name: string
+  production: number
+}
 
 interface ChoroplethMapProps {
   features: Feature<Geometry, DepartmentGeoProperties>[]
@@ -30,6 +40,7 @@ interface ChoroplethMapProps {
   geoPath: GeoPath<unknown, Feature<Geometry, DepartmentGeoProperties>>
   width: number
   height: number
+  domainExtent?: [number, number]
 }
 
 export function ChoroplethMap({
@@ -40,9 +51,15 @@ export function ChoroplethMap({
   geoPath,
   width,
   height,
+  domainExtent,
 }: ChoroplethMapProps) {
+  const [hoveredDane, setHoveredDane] = useState<string | null>(null)
+  const [tip, setTip] = useState<TipState | null>(null)
+  const svgRef = useRef<SVGSVGElement>(null)
+
   return (
     <svg
+      ref={svgRef}
       width={width}
       height={height}
       role="img"
@@ -53,6 +70,7 @@ export function ChoroplethMap({
         const departmentName = feature.properties.DPTO_CNMBR
         const production = productionByDane.get(daneCode) ?? 0
         const isProtagonist = highlightDaneCodes.includes(daneCode)
+        const isHovered = hoveredDane === daneCode
 
         // D3 geoPath computes the SVG path string — pure math, no DOM access.
         const pathD = geoPath(feature) ?? ''
@@ -63,12 +81,61 @@ export function ChoroplethMap({
             data-dane-code={daneCode}
             d={pathD}
             fill={colorScale(production)}
-            stroke="#fff"
-            strokeWidth={isProtagonist ? 2 : 0.5}
+            stroke={isHovered ? '#333' : '#fff'}
+            strokeWidth={isHovered ? 2.5 : isProtagonist ? 2 : 0.5}
+            style={{ transition: 'fill 300ms ease' }}
             aria-label={`${departmentName}: ${production.toLocaleString()} tonnes`}
+            onMouseEnter={(e) => {
+              setHoveredDane(daneCode)
+              const { left = 0, top = 0 } = svgRef.current?.getBoundingClientRect() ?? {}
+              setTip({
+                x: e.clientX - left,
+                y: e.clientY - top,
+                name: departmentName,
+                production,
+              })
+            }}
+            onMouseLeave={() => {
+              setHoveredDane(null)
+              setTip(null)
+            }}
           />
         )
       })}
+
+      {/* Tooltip overlay — SVG <g> inside the map SVG */}
+      {tip && (
+        <g
+          data-testid="choropleth-tooltip"
+          transform={`translate(${tip.x + 8}, ${tip.y - 8})`}
+        >
+          <rect
+            x={0}
+            y={-16}
+            width={140}
+            height={36}
+            fill="white"
+            fillOpacity={0.9}
+            rx={3}
+          />
+          <text x={6} y={0} fontSize={12} fontWeight="bold">
+            {tip.name}
+          </text>
+          <text x={6} y={14} fontSize={11} fill="#555">
+            {tip.production.toLocaleString('en-US')} tonnes
+          </text>
+        </g>
+      )}
+
+      {/* Color legend — rendered when domainExtent is provided */}
+      {domainExtent && (
+        <g transform={`translate(${width - 220}, ${height - 36})`}>
+          <ColorLegend
+            colorScale={colorScale}
+            domainExtent={domainExtent}
+          />
+        </g>
+      )}
     </svg>
   )
 }

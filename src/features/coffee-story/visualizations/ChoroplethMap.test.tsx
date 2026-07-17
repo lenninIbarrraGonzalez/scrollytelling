@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect, afterEach } from 'vitest'
-import { render, cleanup } from '@testing-library/react'
+import { render, cleanup, fireEvent } from '@testing-library/react'
 import type { Feature, Geometry } from 'geojson'
 import type { DepartmentGeoProperties as DepartmentProperties } from '../../../domain/coffee'
 import { scaleSequential, interpolateYlOrRd, geoMercator, geoPath } from 'd3'
@@ -34,6 +34,9 @@ function makeFeature(daneCode: string, name: string): Feature<Geometry, Departme
 
 const huilaFeature = makeFeature('41', 'HUILA')
 const vapuesFeature = makeFeature('97', 'VAUPÉS')
+const antioquiaFeature = makeFeature('05', 'Antioquia')
+const cundinamarcaFeature = makeFeature('25', 'Cundinamarca')
+const valleFeature = makeFeature('76', 'Valle del Cauca')
 
 // ---------------------------------------------------------------------------
 // Fixture scales / geoPath
@@ -174,6 +177,249 @@ describe('ChoroplethMap', () => {
     // For zero/unknown production, the fill should be the scale at 0 (or a default)
     const expectedFill = colorScale(0)
     expect(vapuesPath?.getAttribute('fill')).toBe(expectedFill)
+  })
+
+  // ---------------------------------------------------------------------------
+  // PR2-3: Hover highlight tests (REQ-CM-01–04)
+  // ---------------------------------------------------------------------------
+
+  it('mouseEnter on "Antioquia" path → that path gets strokeWidth 2.5', () => {
+    const features = [antioquiaFeature, cundinamarcaFeature]
+    const productionByDane = new Map<string, number>([
+      ['05', 200000],
+      ['25', 100000],
+    ])
+
+    render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const antioquiaPath = document.querySelector('path[data-dane-code="05"]') as SVGPathElement
+    const cundinamarcaPath = document.querySelector('path[data-dane-code="25"]') as SVGPathElement
+    expect(antioquiaPath).not.toBeNull()
+    expect(cundinamarcaPath).not.toBeNull()
+
+    fireEvent.mouseEnter(antioquiaPath)
+
+    expect(antioquiaPath.getAttribute('stroke-width')).toBe('2.5')
+    // Cundinamarca should not be hovered
+    expect(cundinamarcaPath.getAttribute('stroke-width')).not.toBe('2.5')
+  })
+
+  it('mouseLeave on "Antioquia" → reverts to default stroke, no department hovered', () => {
+    const features = [antioquiaFeature]
+    const productionByDane = new Map<string, number>([['05', 200000]])
+
+    render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const antioquiaPath = document.querySelector('path[data-dane-code="05"]') as SVGPathElement
+    fireEvent.mouseEnter(antioquiaPath)
+    expect(antioquiaPath.getAttribute('stroke-width')).toBe('2.5')
+
+    fireEvent.mouseLeave(antioquiaPath)
+    expect(antioquiaPath.getAttribute('stroke-width')).not.toBe('2.5')
+  })
+
+  it('mouseEnter "Cundinamarca" while "Antioquia" hovered → Cundinamarca gets hover stroke, Antioquia reverts', () => {
+    const features = [antioquiaFeature, cundinamarcaFeature]
+    const productionByDane = new Map<string, number>([
+      ['05', 200000],
+      ['25', 100000],
+    ])
+
+    render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const antioquiaPath = document.querySelector('path[data-dane-code="05"]') as SVGPathElement
+    const cundinamarcaPath = document.querySelector('path[data-dane-code="25"]') as SVGPathElement
+
+    // Hover Antioquia first
+    fireEvent.mouseEnter(antioquiaPath)
+    expect(antioquiaPath.getAttribute('stroke-width')).toBe('2.5')
+
+    // Now hover Cundinamarca
+    fireEvent.mouseEnter(cundinamarcaPath)
+    expect(cundinamarcaPath.getAttribute('stroke-width')).toBe('2.5')
+    expect(antioquiaPath.getAttribute('stroke-width')).not.toBe('2.5')
+  })
+
+  // ---------------------------------------------------------------------------
+  // PR2-7: CSS fill transition tests (REQ-CM-14–16, REQ-NFR-08)
+  // ---------------------------------------------------------------------------
+
+  it('every department <path> has style.transition containing "fill" and "300ms"', () => {
+    const features = [antioquiaFeature, cundinamarcaFeature]
+    const productionByDane = new Map<string, number>([
+      ['05', 200000],
+      ['25', 100000],
+    ])
+
+    const { container } = render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const paths = Array.from(container.querySelectorAll('path[data-dane-code]'))
+    expect(paths.length).toBeGreaterThan(0)
+    for (const path of paths) {
+      const transition = (path as HTMLElement).style.transition
+      expect(transition).toContain('fill')
+      expect(transition).toContain('300ms')
+    }
+  })
+
+  it('after year prop change, <path> elements still have style.transition containing "fill 300ms ease"', () => {
+    const features = [antioquiaFeature]
+    const productionByDane = new Map<string, number>([['05', 200000]])
+
+    const { container, rerender } = render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    // Simulate a data update (different production value simulates year change)
+    const updatedProduction = new Map<string, number>([['05', 300000]])
+    rerender(
+      <ChoroplethMap
+        features={features}
+        productionByDane={updatedProduction}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const path = container.querySelector('path[data-dane-code="05"]') as HTMLElement
+    expect(path.style.transition).toContain('fill 300ms ease')
+    // fill should have updated
+    const expectedFill = colorScale(300000)
+    expect(path.getAttribute('fill')).toBe(expectedFill)
+  })
+
+  // ---------------------------------------------------------------------------
+  // PR2-5: Tooltip tests (REQ-CM-05–08)
+  // ---------------------------------------------------------------------------
+
+  it('mouseEnter on "Valle del Cauca" → tooltip <g> visible with department name and production value', () => {
+    const features = [valleFeature]
+    const productionByDane = new Map<string, number>([['76', 12345]])
+
+    const { container } = render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const vallePath = container.querySelector('path[data-dane-code="76"]') as SVGPathElement
+    expect(vallePath).not.toBeNull()
+
+    fireEvent.mouseEnter(vallePath, { clientX: 100, clientY: 200 })
+
+    const tooltip = container.querySelector('[data-testid="choropleth-tooltip"]')
+    expect(tooltip).not.toBeNull()
+    expect(tooltip?.textContent).toContain('Valle del Cauca')
+    expect(tooltip?.textContent).toContain('12,345')
+  })
+
+  it('mouseLeave → tooltip is absent', () => {
+    const features = [valleFeature]
+    const productionByDane = new Map<string, number>([['76', 12345]])
+
+    const { container } = render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+      />,
+    )
+
+    const vallePath = container.querySelector('path[data-dane-code="76"]') as SVGPathElement
+    fireEvent.mouseEnter(vallePath, { clientX: 100, clientY: 200 })
+    // Tooltip should appear
+    expect(container.querySelector('[data-testid="choropleth-tooltip"]')).not.toBeNull()
+
+    fireEvent.mouseLeave(vallePath)
+    // Tooltip should disappear
+    expect(container.querySelector('[data-testid="choropleth-tooltip"]')).toBeNull()
+  })
+
+  // ---------------------------------------------------------------------------
+  // PR2-9: ColorLegend integration test (REQ-CM-09)
+  // ---------------------------------------------------------------------------
+
+  it('renders <rect> swatches from ColorLegend when domainExtent prop is provided', () => {
+    const features = [huilaFeature]
+    const productionByDane = new Map<string, number>([['41', 300000]])
+
+    const { container } = render(
+      <ChoroplethMap
+        features={features}
+        productionByDane={productionByDane}
+        colorScale={colorScale}
+        highlightDaneCodes={[]}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+        domainExtent={[0, 500000]}
+      />,
+    )
+
+    // ColorLegend renders <rect> swatches inside the SVG
+    const rects = container.querySelectorAll('rect')
+    expect(rects.length).toBeGreaterThanOrEqual(1)
   })
 
   it('does NOT call d3.select or d3.transition (static guard)', async () => {

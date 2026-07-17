@@ -129,6 +129,7 @@ export function Scrollytelling({
           activeViz={activeViz}
           highlightDaneCodes={highlightDaneCodes}
           annotations={annotations}
+          domainExtent={productionExtent}
         />
       </div>
 

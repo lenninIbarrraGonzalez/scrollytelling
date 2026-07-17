@@ -63,31 +63,31 @@ Chain strategy: stacked-to-main
 
 ### PR2 Phase 1: ColorLegend Component (new file — no upstream deps)
 
-- [ ] **PR2-1** [RED] Create `src/features/coffee-story/visualizations/ColorLegend.test.tsx` — tests: (a) renders exactly `steps` (default 6) `<rect>` elements; (b) each `<rect>` has correct `fill` from `colorScale`; (c) renders min/max `<text>` labels from `domainExtent`; (d) source scan: `"useState"`, `"useEffect"`, `"useStore"`, `"useScrollStore"` absent. (Covers REQ-CM-09–13)
-- [ ] **PR2-2** [GREEN] Create `src/features/coffee-story/visualizations/ColorLegend.tsx` — pure presentational `<g>`; sample `colorScale` at `steps` evenly spaced values across `domainExtent`; render `steps` `<rect>` swatches + min/max `<text>` labels. Props: `colorScale: (v: number) => string`, `domainExtent: [number, number]`, `width?: number` (default 200), `steps?: number` (default 6). No hooks, no side effects. (Covers REQ-CM-09–12)
+- [x] **PR2-1** [RED] Create `src/features/coffee-story/visualizations/ColorLegend.test.tsx` — tests: (a) renders exactly `steps` (default 6) `<rect>` elements; (b) each `<rect>` has correct `fill` from `colorScale`; (c) renders min/max `<text>` labels from `domainExtent`; (d) source scan: `"useState"`, `"useEffect"`, `"useStore"`, `"useScrollStore"` absent. (Covers REQ-CM-09–13)
+- [x] **PR2-2** [GREEN] Create `src/features/coffee-story/visualizations/ColorLegend.tsx` — pure presentational `<g>`; sample `colorScale` at `steps` evenly spaced values across `domainExtent`; render `steps` `<rect>` swatches + min/max `<text>` labels. Props: `colorScale: (v: number) => string`, `domainExtent: [number, number]`, `width?: number` (default 200), `steps?: number` (default 6). No hooks, no side effects. (Covers REQ-CM-09–12)
 
 ### PR2 Phase 2: ChoroplethMap — Hover Highlight
 
-- [ ] **PR2-3** [RED] `ChoroplethMap.test.tsx` — add failing tests: (a) `mouseEnter` on "Antioquia" path → that path has `strokeWidth` 2.5, "Cundinamarca" has default stroke; (b) `mouseLeave` on "Antioquia" → reverts to default stroke, no department hovered; (c) `mouseEnter` "Cundinamarca" while "Antioquia" hovered → "Cundinamarca" gets hover stroke, "Antioquia" reverts. (Covers REQ-CM-01–04)
-- [ ] **PR2-4** [GREEN] `ChoroplethMap.tsx` — add `[hoveredDane, setHoveredDane] = useState<string | null>(null)`; add `onMouseEnter={() => setHoveredDane(dane)}` + `onMouseLeave={() => setHoveredDane(null)}` to each department `<path>`; conditionally apply `strokeWidth={2.5} stroke="#333"` when `hoveredDane === dane`. Zero `d3.select`. (Covers REQ-CM-01–04, REQ-NFR-05)
+- [x] **PR2-3** [RED] `ChoroplethMap.test.tsx` — add failing tests: (a) `mouseEnter` on "Antioquia" path → that path has `strokeWidth` 2.5, "Cundinamarca" has default stroke; (b) `mouseLeave` on "Antioquia" → reverts to default stroke, no department hovered; (c) `mouseEnter` "Cundinamarca" while "Antioquia" hovered → "Cundinamarca" gets hover stroke, "Antioquia" reverts. (Covers REQ-CM-01–04)
+- [x] **PR2-4** [GREEN] `ChoroplethMap.tsx` — add `[hoveredDane, setHoveredDane] = useState<string | null>(null)`; add `onMouseEnter={() => setHoveredDane(dane)}` + `onMouseLeave={() => setHoveredDane(null)}` to each department `<path>`; conditionally apply `strokeWidth={2.5} stroke="#333"` when `hoveredDane === dane`. Zero `d3.select`. (Covers REQ-CM-01–04, REQ-NFR-05)
 
 ### PR2 Phase 3: ChoroplethMap — Tooltip
 
-- [ ] **PR2-5** [RED] `ChoroplethMap.test.tsx` — add failing tests: (a) `mouseEnter` on "Valle del Cauca" → tooltip `<g>` (or element) visible with text "Valle del Cauca" and value "12345" (or formatted); (b) `mouseLeave` → tooltip absent. (Covers REQ-CM-05–08)
-- [ ] **PR2-6** [GREEN] `ChoroplethMap.tsx` — add `[tip, setTip] = useState<TipState | null>(null)`; on `onMouseEnter` set tip with `{x, y, name, production}`; on `onMouseLeave` clear tip; render tip as SVG `<g>` overlay with department name + production text. (Covers REQ-CM-05–08)
+- [x] **PR2-5** [RED] `ChoroplethMap.test.tsx` — add failing tests: (a) `mouseEnter` on "Valle del Cauca" → tooltip `<g>` (or element) visible with text "Valle del Cauca" and value "12345" (or formatted); (b) `mouseLeave` → tooltip absent. (Covers REQ-CM-05–08)
+- [x] **PR2-6** [GREEN] `ChoroplethMap.tsx` — add `[tip, setTip] = useState<TipState | null>(null)`; on `onMouseEnter` set tip with `{x, y, name, production}`; on `onMouseLeave` clear tip; render tip as SVG `<g>` overlay with department name + production text. (Covers REQ-CM-05–08)
 
 ### PR2 Phase 4: CSS Fill Transition
 
-- [ ] **PR2-7** [RED] `ChoroplethMap.test.tsx` — add failing tests: (a) any department `<path>` has `style.transition` containing `"fill"` and `"300ms"`; (b) after year prop change, each `<path>` still has `style.transition` containing `"fill 300ms ease"` and `fill` has updated. (Covers REQ-CM-14–16, REQ-NFR-08)
-- [ ] **PR2-8** [GREEN] `ChoroplethMap.tsx` — add `style={{ transition: 'fill 300ms ease' }}` to every department `<path>`. No `d3.transition`. (Covers REQ-CM-14–15)
+- [x] **PR2-7** [RED] `ChoroplethMap.test.tsx` — add failing tests: (a) any department `<path>` has `style.transition` containing `"fill"` and `"300ms"`; (b) after year prop change, each `<path>` still has `style.transition` containing `"fill 300ms ease"` and `fill` has updated. (Covers REQ-CM-14–16, REQ-NFR-08)
+- [x] **PR2-8** [GREEN] `ChoroplethMap.tsx` — add `style={{ transition: 'fill 300ms ease' }}` to every department `<path>`. No `d3.transition`. (Covers REQ-CM-14–15)
 
 ### PR2 Phase 5: ColorLegend Integration + domainExtent Prop Thread [SCOPE-FLAG]
 
-- [ ] **PR2-9** [RED] `ChoroplethMap.test.tsx` — add failing test: with `domainExtent` prop provided, a `ColorLegend` child is rendered (query for `<rect>` swatches ≥ 1). (Covers REQ-CM-09)
-- [ ] **PR2-10** [GREEN] `ChoroplethMap.tsx` — accept optional `domainExtent?: [number, number]` prop; render `<ColorLegend colorScale={colorScale} domainExtent={domainExtent ?? [0, 1]} />` inside the SVG. (Covers REQ-CM-09–11)
-- [ ] **PR2-11** [SCOPE-FLAG] `src/features/coffee-story/visualizations/StickyVisualization.tsx` — accept and pass through optional `domainExtent?: [number, number]` prop to `<ChoroplethMap>`. One-line prop addition. (Design: prop thread)
-- [ ] **PR2-12** [SCOPE-FLAG] `src/features/coffee-story/components/Scrollytelling.tsx` — pass existing `productionExtent` (already computed lines 88–95) as `domainExtent` prop to `<StickyVisualization>`. One-line addition. (Design: prop thread)
+- [x] **PR2-9** [RED] `ChoroplethMap.test.tsx` — add failing test: with `domainExtent` prop provided, a `ColorLegend` child is rendered (query for `<rect>` swatches ≥ 1). (Covers REQ-CM-09)
+- [x] **PR2-10** [GREEN] `ChoroplethMap.tsx` — accept optional `domainExtent?: [number, number]` prop; render `<ColorLegend colorScale={colorScale} domainExtent={domainExtent ?? [0, 1]} />` inside the SVG. (Covers REQ-CM-09–11)
+- [x] **PR2-11** [SCOPE-FLAG] `src/features/coffee-story/visualizations/StickyVisualization.tsx` — accept and pass through optional `domainExtent?: [number, number]` prop to `<ChoroplethMap>`. One-line prop addition. (Design: prop thread)
+- [x] **PR2-12** [SCOPE-FLAG] `src/features/coffee-story/components/Scrollytelling.tsx` — pass existing `productionExtent` (already computed lines 88–95) as `domainExtent` prop to `<StickyVisualization>`. One-line addition. (Design: prop thread)
 
 ### PR2 Phase 6: D3-Guard + Full Suite Verification
 
-- [ ] **PR2-13** [VERIFY] Run `npm run check` — confirm: (a) existing D3-guard tests pass; (b) all new `ColorLegend.test.tsx` and `ChoroplethMap.test.tsx` cases pass; (c) no TypeScript errors. (Covers REQ-NFR-03, REQ-NFR-06, REQ-NFR-09)
+- [x] **PR2-13** [VERIFY] Run `npm run check` — confirm: (a) existing D3-guard tests pass; (b) all new `ColorLegend.test.tsx` and `ChoroplethMap.test.tsx` cases pass; (c) no TypeScript errors. (Covers REQ-NFR-03, REQ-NFR-06, REQ-NFR-09)

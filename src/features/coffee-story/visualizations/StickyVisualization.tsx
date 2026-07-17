@@ -37,6 +37,8 @@ interface StickyVisualizationProps {
   annotations?: { year: number; label: string }[]
   /** Source-switch label for line chart. */
   sourceLabel?: string
+  /** Production domain extent [min, max] for the choropleth color legend. */
+  domainExtent?: [number, number]
 }
 
 /**
@@ -74,6 +76,7 @@ export function StickyVisualization({
   highlightDaneCodes = [],
   annotations = [],
   sourceLabel,
+  domainExtent,
 }: StickyVisualizationProps) {
   const productionByDane = buildProductionByDane(departmentSeries)
 
@@ -99,6 +102,7 @@ export function StickyVisualization({
           geoPath={geoPath}
           width={width}
           height={height}
+          domainExtent={domainExtent}
         />
       )}
     </div>
