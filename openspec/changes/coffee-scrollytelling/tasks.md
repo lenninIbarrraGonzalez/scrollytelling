@@ -9,11 +9,11 @@
 | Chained PRs recommended | Yes |
 | Suggested split | PR-A (scaffold + domain) → PR-B (data layer) → PR-C (store + D3 hooks + visualizations) → PR-D (layout + content + wiring + polish) |
 | Delivery strategy | ask-on-risk |
-| Chain strategy | pending |
+| Chain strategy | feature-branch-chain (feat/coffee-scaffold-domain → PR-A) |
 
 Decision needed before apply: Yes
 Chained PRs recommended: Yes
-Chain strategy: pending
+Chain strategy: feature-branch-chain
 400-line budget risk: High
 
 > **Action required before apply**: choose a chain strategy — `stacked-to-main`, `feature-branch-chain`, or `size-exception` — then confirm before `sdd-apply` starts.
@@ -50,14 +50,14 @@ Phase 6 (composition + wiring + polish) starts after Phase 5 and Track C both co
 
 No spec scenario — all tasks are prerequisites. This is the first commit.
 
-- [ ] 1.1 Run `npm create vite@latest . -- --template react-ts` in repo root; confirm `vite.config.ts`, `tsconfig.json`, `index.html`, `src/main.tsx` are generated.
-- [ ] 1.2 Install runtime deps: `npm install react react-dom d3 zustand framer-motion topojson-client`; confirm no peer-dep conflicts.
-- [ ] 1.3 Install dev deps: `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @types/d3 @types/react @types/react-dom @types/topojson-client`.
-- [ ] 1.4 Add `test` block to `vite.config.ts`: `environment: 'jsdom'`, `globals: true`, `setupFiles: ['./src/test/setup.ts']`; configure `coverage` provider.
-- [ ] 1.5 Create `src/test/setup.ts` with `import '@testing-library/jest-dom'`; write smoke test `src/test/smoke.test.ts` (`expect(1 + 1).toBe(2)`); run `npx vitest run` — must be green.
-- [ ] 1.6 Create feature-first folder skeleton (empty `index.ts` or `.gitkeep`): `src/features/coffee-story/{components,visualizations,hooks,store,content}/`, `src/data/{socrata,geo,fao}/`, `src/domain/`, `src/shared/`, `src/app/`.
-- [ ] 1.7 Create `src/app/App.tsx` as empty shell (`export default function App() { return null; }`) and wire into `src/main.tsx`.
-- [ ] 1.8 Gate: `npx tsc --noEmit` passes; `npx vitest run` passes smoke test.
+- [x] 1.1 Run `npm create vite@latest . -- --template react-ts` in repo root; confirm `vite.config.ts`, `tsconfig.json`, `index.html`, `src/main.tsx` are generated.
+- [x] 1.2 Install runtime deps: `npm install react react-dom d3 zustand framer-motion topojson-client`; confirm no peer-dep conflicts.
+- [x] 1.3 Install dev deps: `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @types/d3 @types/react @types/react-dom @types/topojson-client`.
+- [x] 1.4 Add `test` block to `vite.config.ts`: `environment: 'jsdom'`, `globals: true`, `setupFiles: ['./src/test/setup.ts']`; configure `coverage` provider. (implemented in vitest.config.ts — separate file avoids TS type conflict with vite's UserConfigExport)
+- [x] 1.5 Create `src/test/setup.ts` with `import '@testing-library/jest-dom'`; write smoke test `src/test/smoke.test.ts` (`expect(1 + 1).toBe(2)`); run `npx vitest run` — must be green.
+- [x] 1.6 Create feature-first folder skeleton (empty `index.ts` or `.gitkeep`): `src/features/coffee-story/{components,visualizations,hooks,store,content}/`, `src/data/{socrata,geo,fao}/`, `src/domain/`, `src/shared/`, `src/app/`.
+- [x] 1.7 Create `src/app/App.tsx` as empty shell (`export default function App() { return null; }`) and wire into `src/main.tsx`.
+- [x] 1.8 Gate: `npx tsc --noEmit` passes; `npx vitest run` passes smoke test.
 
 ---
 
@@ -65,9 +65,9 @@ No spec scenario — all tasks are prerequisites. This is the first commit.
 
 Spec coverage: scroll-narrative "Typed Chapter Content", "Missing chapter id is a type error"; coffee-data "String-to-Numeric Domain Mapping".
 
-- [ ] 2.1 **RED** — Create `src/domain/coffee.test.ts`; write type-level test using `@ts-expect-error` asserting that a `Chapter` constructed without `id` is a compile error; assert `YearDatum.production` typed as `number` (not `string`); `npx vitest run src/domain` → fail or tsc catches error.
-- [ ] 2.2 **GREEN** — Create `src/domain/coffee.ts`; export: `YearDatum { year: number; production: number }`, `DepartmentProduction { daneCode: string; department: string; year: number; production: number; areaHarvested?: number; yield?: number }`, `ChapterSource = 'FAO' | 'EVA'`, `Chapter { id: string; index: number; source: ChapterSource; viz: 'line' | 'choropleth'; title: string; body: string; highlightDaneCodes?: string[]; annotations?: { year: number; label: string }[] }`, `NationalSeries = YearDatum[]`, `DepartmentSeries = DepartmentProduction[]`. Zero runtime logic; zero React/D3 imports.
-- [ ] 2.3 **VERIFY** — `npx tsc --noEmit` passes; domain tests green.
+- [x] 2.1 **RED** — Create `src/domain/coffee.test.ts`; write type-level test using `@ts-expect-error` asserting that a `Chapter` constructed without `id` is a compile error; assert `YearDatum.production` typed as `number` (not `string`); `npx vitest run src/domain` → fail or tsc catches error.
+- [x] 2.2 **GREEN** — Create `src/domain/coffee.ts`; export: `YearDatum { year: number; production: number }`, `DepartmentProduction { daneCode: string; department: string; year: number; production: number; areaHarvested?: number; yield?: number }`, `ChapterSource = 'FAO' | 'EVA'`, `Chapter { id: string; index: number; source: ChapterSource; viz: 'line' | 'choropleth'; title: string; body: string; highlightDaneCodes?: string[]; annotations?: { year: number; label: string }[] }`, `NationalSeries = YearDatum[]`, `DepartmentSeries = DepartmentProduction[]`. Zero runtime logic; zero React/D3 imports.
+- [x] 2.3 **VERIFY** — `npx tsc --noEmit` passes; domain tests green.
 
 ---
 
