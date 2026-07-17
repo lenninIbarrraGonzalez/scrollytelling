@@ -229,9 +229,9 @@ Spec coverage: scroll-narrative "Smooth Text Transitions", "Inactive chapter tex
 
 - [x] 7.1 `npx vitest run --coverage` — all tests green; coverage ≥ 80%.
 - [x] 7.2 `npx tsc --noEmit` — zero errors.
-- [ ] 7.3 `npx eslint .` — eslint not configured (no .eslintrc); skipped per scope.
+- [ ] 7.3 `npx eslint .` — eslint not configured (no .eslintrc); skipped per scope. [ARCHIVE NOTE: explicitly out-of-scope per implementation decision; no eslint config was added to this greenfield project]
 - [x] 7.4 `npx vite build` — build succeeds (406 KB bundle, 271 ms).
-- [ ] 7.5 Manual smoke: `npx vite preview` — scroll all 5 chapters; verify `activeChapterId` updates in React DevTools; verify choropleth fill tweens visibly between chapters; verify 2021 La Niña annotation present; verify 2007 source-switch label visible; verify Huila stroke distinct.
+- [ ] 7.5 Manual smoke: `npx vite preview` — scroll all 5 chapters; verify `activeChapterId` updates in React DevTools; verify choropleth fill tweens visibly between chapters; verify 2021 La Niña annotation present; verify 2007 source-switch label visible; verify Huila stroke distinct. [ARCHIVE NOTE: not automated; deferred to post-deploy manual QA]
 
 ---
 

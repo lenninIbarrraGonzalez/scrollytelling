@@ -98,7 +98,7 @@ N/A — no routing, shell, subprocess, VCS/PR automation, executable-file classi
 
 No migration required. Greenfield; revert by deleting `src/{features/coffee-story,data,domain}`.
 
-## Open Questions
+## Open Questions (resolved during implementation)
 
-- [ ] Confirm `uejq-wxrr` DANE field is `c_digo_dane_departamento` (vs old `c_d_dep`) before locking `fieldMap`.
-- [ ] Prefer simplified TopoJSON URL over 387 KB raw GeoJSON for choropleth perf (bundle vs fetch).
+- [x] Confirmed `uejq-wxrr` DANE field is `c_digo_dane_departamento` (used in NEW_EVA_CONFIG).
+- [x] Simplified TopoJSON URL confirmed (caticoa3 simplified variant used in colombiaGeoLoader.ts).
