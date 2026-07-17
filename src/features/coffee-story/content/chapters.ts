@@ -56,6 +56,7 @@ export const chapters: Chapter[] = [
       'Risaralda, Quindío, Antioquia y Tolima— mientras Huila comenzaba a destacarse. ' +
       'Fuente: EVA 2007–2018 (dataset 2pnw-mmge, filtro cultivo=CAFE).',
     highlightDaneCodes: PROTAGONIST_CODES,
+    dataYear: 2012,
     annotations: [
       { year: 2007, label: 'Pico EVA: ~828.904 t' },
       { year: 2012, label: 'Mínimo roya: ~626.798 t' },
@@ -75,6 +76,7 @@ export const chapters: Chapter[] = [
       'exceso de lluvias y una nueva caída transitoria a ~560.000 t. ' +
       'Fuente: EVA 2007–2024 (datasets 2pnw-mmge y uejq-wxrr).',
     highlightDaneCodes: PROTAGONIST_CODES,
+    dataYear: 2019,
     annotations: [{ year: 2021, label: 'La Niña: ~560.000 t' }],
   },
   {
@@ -90,6 +92,7 @@ export const chapters: Chapter[] = [
       'Antioquia (05) y Tolima (73) cerraron la brecha significativamente. ' +
       'El mapa revela un sector más diversificado y resiliente que en la era pre-roya.',
     highlightDaneCodes: PROTAGONIST_CODES,
+    dataYear: 2023,
     annotations: [{ year: 2021, label: 'La Niña: ~560.000 t' }],
   },
 ]

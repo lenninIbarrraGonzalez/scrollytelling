@@ -16,9 +16,12 @@ import type { Chapter } from '../../../domain/coffee'
 
 // Provide minimal mocks before importing the component under test.
 
-// Mock StickyVisualization to avoid D3/geo complexity in layout tests.
+// Mock StickyVisualization — captures activeViz prop for assertion.
+const mockStickyViz = vi.fn((_props: { activeViz?: string }) => (
+  <div data-testid="sticky-viz-mock" data-active-viz={_props.activeViz} />
+))
 vi.mock('../visualizations/StickyVisualization', () => ({
-  StickyVisualization: () => <div data-testid="sticky-viz-mock" />,
+  StickyVisualization: (props: { activeViz?: string }) => mockStickyViz(props),
 }))
 
 // Mock useActiveChapter — no real IntersectionObserver in jsdom.
@@ -111,6 +114,7 @@ describe('Scrollytelling', () => {
   beforeEach(() => {
     // Reset store between tests
     useScrollStore.setState({ activeChapterId: null })
+    mockStickyViz.mockClear()
   })
 
   afterEach(() => {
@@ -159,6 +163,32 @@ describe('Scrollytelling', () => {
 
     // The mock StickyVisualization renders with data-testid="sticky-viz-mock"
     expect(screen.getByTestId('sticky-viz-mock')).toBeInTheDocument()
+  })
+
+  it('passes activeViz="line" to StickyVisualization when active chapter is FAO/line', () => {
+    useScrollStore.setState({ activeChapterId: 'ch-1' })
+    render(
+      <Scrollytelling
+        chapters={mockChapters}
+        nationalSeries={mockNationalSeries}
+        departmentSeries={mockDepartmentSeries}
+        geoFeatures={mockGeoFeatures}
+      />,
+    )
+    expect(screen.getByTestId('sticky-viz-mock').dataset.activeViz).toBe('line')
+  })
+
+  it('passes activeViz="choropleth" to StickyVisualization when active chapter is EVA/choropleth', () => {
+    useScrollStore.setState({ activeChapterId: 'ch-3' })
+    render(
+      <Scrollytelling
+        chapters={mockChapters}
+        nationalSeries={mockNationalSeries}
+        departmentSeries={mockDepartmentSeries}
+        geoFeatures={mockGeoFeatures}
+      />,
+    )
+    expect(screen.getByTestId('sticky-viz-mock').dataset.activeViz).toBe('choropleth')
   })
 
   it('has a 2-column layout wrapper element', () => {

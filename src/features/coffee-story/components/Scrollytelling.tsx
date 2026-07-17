@@ -21,7 +21,6 @@ import type { Feature, Geometry } from 'geojson'
 import { geoMercator, geoPath } from 'd3'
 import type { ExtendedFeatureCollection } from 'd3-geo'
 import type { NationalSeries, DepartmentSeries, DepartmentGeoProperties, Chapter } from '../../../domain/coffee'
-import type { ColombiaFeatureCollection } from '../../../data/geo/colombiaGeoLoader'
 import { useScrollStore } from '../store/scrollStore'
 import { useActiveChapter } from '../hooks/useActiveChapter'
 import { useD3Scales } from '../visualizations/useD3Scales'
@@ -37,7 +36,7 @@ interface ScrollytellingProps {
   chapters: Chapter[]
   nationalSeries: NationalSeries
   departmentSeries: DepartmentSeries
-  geoFeatures: ColombiaFeatureCollection | { type: 'FeatureCollection'; features: Feature<Geometry, DepartmentGeoProperties>[] }
+  geoFeatures: { type: 'FeatureCollection'; features: Feature<Geometry, DepartmentGeoProperties>[] }
 }
 
 export function Scrollytelling({
@@ -62,7 +61,6 @@ export function Scrollytelling({
   // Ensure all chapters have refs in the container map.
   for (const chapter of chapters) {
     if (!refsContainer.current.has(chapter.id)) {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       refsContainer.current.set(chapter.id, { current: null })
     }
   }
@@ -77,6 +75,14 @@ export function Scrollytelling({
   // Derive props for the active chapter (choropleth-specific).
   const highlightDaneCodes = activeChapter?.highlightDaneCodes ?? []
   const annotations = activeChapter?.annotations ?? []
+
+  // Filter departmentSeries to the chapter's narrative year so each choropleth
+  // chapter shows the data that matches its story, not the most recent year.
+  const chapterDepartmentSeries = useMemo(() => {
+    const year = activeChapter?.dataYear
+    if (!year) return departmentSeries
+    return departmentSeries.filter((d) => d.year === year)
+  }, [activeChapter, departmentSeries])
 
   // D3 scale math — computed here and passed down to keep viz components pure.
   const productionExtent = useMemo(() => {
@@ -114,7 +120,7 @@ export function Scrollytelling({
       <div className="scrollytelling-viz-column">
         <StickyVisualization
           nationalSeries={nationalSeries}
-          departmentSeries={departmentSeries}
+          departmentSeries={chapterDepartmentSeries}
           geoFeatures={geoFeatures as { features: Feature<Geometry, DepartmentGeoProperties>[] }}
           colorScale={colorScale}
           geoPath={geoPathGenerator}

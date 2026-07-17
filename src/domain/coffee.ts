@@ -51,6 +51,12 @@ export interface Chapter {
   highlightDaneCodes?: string[]
   /** Data annotations rendered on the visualization. */
   annotations?: { year: number; label: string }[]
+  /**
+   * Year used to slice departmentSeries for choropleth chapters.
+   * Required for EVA chapters — ensures each chapter shows the year that
+   * matches its narrative, not just the most recent available data.
+   */
+  dataYear?: number
 }
 
 /** Full national production time series. */
