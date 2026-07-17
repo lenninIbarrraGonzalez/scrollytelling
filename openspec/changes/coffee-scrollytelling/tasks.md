@@ -220,17 +220,17 @@ Spec coverage: scroll-narrative "Smooth Text Transitions", "Inactive chapter tex
 
 ### 6.7 — Open Question Resolution
 
-- [ ] 6.17 Confirm `uejq-wxrr` DANE field is `c_digo_dane_departamento` (not `c_d_dep`); update `NEW_EVA_CONFIG.fieldMap` if different.
-- [ ] 6.18 Confirm simplified TopoJSON URL for Colombian departments; update `colombiaGeoLoader.ts` if raw GeoJSON URL was used as placeholder.
+- [x] 6.17 Confirm `uejq-wxrr` DANE field is `c_digo_dane_departamento` (not `c_d_dep`); update `NEW_EVA_CONFIG.fieldMap` if different.
+- [x] 6.18 Confirm simplified TopoJSON URL for Colombian departments; update `colombiaGeoLoader.ts` if raw GeoJSON URL was used as placeholder.
 
 ---
 
 ## Phase 7: Full Suite Verification Gate (All PRs)
 
-- [ ] 7.1 `npx vitest run --coverage` — all tests green; coverage ≥ 80%.
-- [ ] 7.2 `npx tsc --noEmit` — zero errors.
-- [ ] 7.3 `npx eslint .` — zero errors.
-- [ ] 7.4 `npx vite build` — build succeeds with no TS errors.
+- [x] 7.1 `npx vitest run --coverage` — all tests green; coverage ≥ 80%.
+- [x] 7.2 `npx tsc --noEmit` — zero errors.
+- [ ] 7.3 `npx eslint .` — eslint not configured (no .eslintrc); skipped per scope.
+- [x] 7.4 `npx vite build` — build succeeds (406 KB bundle, 271 ms).
 - [ ] 7.5 Manual smoke: `npx vite preview` — scroll all 5 chapters; verify `activeChapterId` updates in React DevTools; verify choropleth fill tweens visibly between chapters; verify 2021 La Niña annotation present; verify 2007 source-switch label visible; verify Huila stroke distinct.
 
 ---
