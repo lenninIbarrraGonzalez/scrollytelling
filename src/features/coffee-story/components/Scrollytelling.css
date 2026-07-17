@@ -1,0 +1,55 @@
+/**
+ * Scrollytelling layout styles.
+ * 2-column grid on desktop; stacked on mobile (< 768 px).
+ */
+
+.scrollytelling-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.scrollytelling-viz-column {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scrollytelling-text-column {
+  /* Scrolling text column — no sticky positioning. */
+}
+
+.scrollytelling-chapter-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+/* Responsive: stack columns vertically on narrow viewports */
+@media (max-width: 768px) {
+  .scrollytelling-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* On mobile: visualization goes on top, in normal flow (not sticky) */
+  .scrollytelling-viz-column {
+    position: static;
+    height: auto;
+    order: -1; /* Move to top */
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .scrollytelling-chapter-section {
+    min-height: auto;
+    padding: 3rem 0;
+  }
+}
