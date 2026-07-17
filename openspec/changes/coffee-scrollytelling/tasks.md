@@ -126,11 +126,11 @@ Spec coverage: coffee-data "Fetch-Once Cache", "Per-Dataset Coffee Filter Consta
 
 Spec coverage: scroll-narrative "IntersectionObserver Sole Writer", "Scrolling backward", "Direct state write prohibited".
 
-- [ ] 3b.1 **RED** — Create `src/features/coffee-story/store/scrollStore.test.ts`; test: `setActiveChapter('chapter-3')` → `activeChapterId === 'chapter-3'`; test: store module exports only `useScrollStore` (no bare `setActiveChapter` export). *(spec: "Direct state write prohibited")*
-- [ ] 3b.2 **GREEN** — Create `src/features/coffee-story/store/scrollStore.ts`; Zustand store `{ activeChapterId: string | null; setActiveChapter(id: string): void }`; export `useScrollStore`; do NOT export `setActiveChapter` as a standalone function.
-- [ ] 3b.3 **RED** — Create `src/features/coffee-story/hooks/useActiveChapter.test.ts`; stub `globalThis.IntersectionObserver` with a class storing callbacks + `.trigger(entries)` method; test: chapter-3 sentinel triggers threshold → `activeChapterId === 'chapter-3'`; test: trigger chapter-2 after chapter-3 was active → store updates to `'chapter-2'`; test: exactly one observer registered over all chapter refs. *(spec: "Chapter enters threshold", "Scrolling backward")*
-- [ ] 3b.4 **GREEN** — Create `src/features/coffee-story/hooks/useActiveChapter.ts`; accept `chapters: Chapter[]` and chapter sentinel refs; create ONE `IntersectionObserver` with `rootMargin: '-45% 0px -45% 0px'`, `threshold: 0`; on intersect call `setActiveChapter(id)` — this is the ONLY writer; cleanup on unmount.
-- [ ] 3b.5 **VERIFY** — Store + hook tests green.
+- [x] 3b.1 **RED** — Create `src/features/coffee-story/store/scrollStore.test.ts`; test: `setActiveChapter('chapter-3')` → `activeChapterId === 'chapter-3'`; test: store module exports only `useScrollStore` (no bare `setActiveChapter` export). *(spec: "Direct state write prohibited")*
+- [x] 3b.2 **GREEN** — Create `src/features/coffee-story/store/scrollStore.ts`; Zustand store `{ activeChapterId: string | null; setActiveChapter(id: string): void }`; export `useScrollStore`; do NOT export `setActiveChapter` as a standalone function.
+- [x] 3b.3 **RED** — Create `src/features/coffee-story/hooks/useActiveChapter.test.ts`; stub `globalThis.IntersectionObserver` with a class storing callbacks + `.trigger(entries)` method; test: chapter-3 sentinel triggers threshold → `activeChapterId === 'chapter-3'`; test: trigger chapter-2 after chapter-3 was active → store updates to `'chapter-2'`; test: exactly one observer registered over all chapter refs. *(spec: "Chapter enters threshold", "Scrolling backward")*
+- [x] 3b.4 **GREEN** — Create `src/features/coffee-story/hooks/useActiveChapter.ts`; accept `chapters: Chapter[]` and chapter sentinel refs; create ONE `IntersectionObserver` with `rootMargin: '-45% 0px -45% 0px'`, `threshold: 0`; on intersect call `setActiveChapter(id)` — this is the ONLY writer; cleanup on unmount.
+- [x] 3b.5 **VERIFY** — Store + hook tests green.
 
 ---
 
@@ -148,11 +148,11 @@ Spec coverage: scroll-narrative "Typed Chapter Content", "Missing chapter id is 
 
 Spec coverage: sticky-visualization "D3 Interpolation Between Chapter Datasets", "D3 interpolator is called, not bypassed"; "React Owns SVG — D3 Computes Math Only".
 
-- [ ] 4.1 **RED** — Create `src/features/coffee-story/visualizations/useD3Scales.test.ts`; render hook with `domainExtent: [0, 1000000]` and `yRange: [400, 0]`; assert `xScale(0) === 0`, `xScale(1000000) === 400` (or range values); assert `colorScale(0)` returns a valid CSS color string. *(design contract: `useD3Scales`)*
-- [ ] 4.2 **GREEN** — Create `src/features/coffee-story/visualizations/useD3Scales.ts`; `useMemo`-wrapped `d3.scaleLinear` for x and y, `d3.scaleSequential` for color; accept `{ domainExtent, xRange, yRange }`; return `{ xScale, yScale, colorScale }`; no DOM access.
-- [ ] 4.3 **RED** — Create `src/features/coffee-story/visualizations/useDataInterpolation.test.ts`; call with `fromData = [{ year: 2012, production: 626798 }]`, `toData = [{ year: 2012, production: 700000 }]`, `progress = 0.5`; assert interpolated production ≈ 663399; spy on `d3.interpolate` and assert it is called. *(spec: "Choropleth tweens fill color", "D3 interpolator is called, not bypassed")*
-- [ ] 4.4 **GREEN** — Create `src/features/coffee-story/visualizations/useDataInterpolation.ts`; build `d3.interpolate` per matched key (`year` for `NationalSeries`, `daneCode` for `DepartmentSeries`); accept `fromData`, `toData`, `progress` (0–1); return interpolated dataset; driven by Framer Motion `useMotionValue` / rAF — no `d3.transition`.
-- [ ] 4.5 **VERIFY** — D3 math hook tests green.
+- [x] 4.1 **RED** — Create `src/features/coffee-story/visualizations/useD3Scales.test.ts`; render hook with `domainExtent: [0, 1000000]` and `yRange: [400, 0]`; assert `xScale(0) === 0`, `xScale(1000000) === 400` (or range values); assert `colorScale(0)` returns a valid CSS color string. *(design contract: `useD3Scales`)*
+- [x] 4.2 **GREEN** — Create `src/features/coffee-story/visualizations/useD3Scales.ts`; `useMemo`-wrapped `d3.scaleLinear` for x and y, `d3.scaleSequential` for color; accept `{ domainExtent, xRange, yRange }`; return `{ xScale, yScale, colorScale }`; no DOM access.
+- [x] 4.3 **RED** — Create `src/features/coffee-story/visualizations/useDataInterpolation.test.ts`; call with `fromData = [{ year: 2012, production: 626798 }]`, `toData = [{ year: 2012, production: 700000 }]`, `progress = 0.5`; assert interpolated production ≈ 663399; spy on `d3.interpolate` and assert it is called. *(spec: "Choropleth tweens fill color", "D3 interpolator is called, not bypassed")*
+- [x] 4.4 **GREEN** — Create `src/features/coffee-story/visualizations/useDataInterpolation.ts`; build `d3.interpolate` per matched key (`year` for `NationalSeries`, `daneCode` for `DepartmentSeries`); accept `fromData`, `toData`, `progress` (0–1); return interpolated dataset; driven by Framer Motion `useMotionValue` / rAF — no `d3.transition`.
+- [x] 4.5 **VERIFY** — D3 math hook tests green.
 
 ---
 
@@ -162,21 +162,21 @@ Spec coverage: sticky-visualization all requirements; coffee-data "2021 La Niña
 
 ### 5.1 — LineChart
 
-- [ ] 5.1 **RED** — Create `src/features/coffee-story/visualizations/LineChart.test.tsx`; render `<LineChart data={fixtures} width={600} height={400} />`; assert `<svg>` present; assert `<path d="...">` has non-empty `d` starting with `'M'`; assert annotation element containing `'La Niña'` present when data includes year 2021; assert source-switch label for 2007 present; mock `d3.select` to throw and confirm it is never called. *(spec: "D3 scale output drives React SVG attrs", "2021 La Niña annotated", "2007 source switch labeled", "No d3.select")*
-- [ ] 5.2 **GREEN** — Create `src/features/coffee-story/visualizations/LineChart.tsx`; accept `data: NationalSeries`, `width`, `height`, `annotations?`, `sourceLabel?`; compute path `d` with `d3.line()` and `useD3Scales`; render `<path d={lineD} />` as React prop; render annotation markers as `<text>` or `<title>`; render 2007 source-switch label; zero `d3.select`.
-- [ ] 5.3 **VERIFY** — LineChart tests green.
+- [x] 5.1 **RED** — Create `src/features/coffee-story/visualizations/LineChart.test.tsx`; render `<LineChart data={fixtures} width={600} height={400} />`; assert `<svg>` present; assert `<path d="...">` has non-empty `d` starting with `'M'`; assert annotation element containing `'La Niña'` present when data includes year 2021; assert source-switch label for 2007 present; mock `d3.select` to throw and confirm it is never called. *(spec: "D3 scale output drives React SVG attrs", "2021 La Niña annotated", "2007 source switch labeled", "No d3.select")*
+- [x] 5.2 **GREEN** — Create `src/features/coffee-story/visualizations/LineChart.tsx`; accept `data: NationalSeries`, `width`, `height`, `annotations?`, `sourceLabel?`; compute path `d` with `d3.line()` and `useD3Scales`; render `<path d={lineD} />` as React prop; render annotation markers as `<text>` or `<title>`; render 2007 source-switch label; zero `d3.select`.
+- [x] 5.3 **VERIFY** — LineChart tests green.
 
 ### 5.2 — ChoroplethMap
 
-- [ ] 5.4 **RED** — Create `src/features/coffee-story/visualizations/ChoroplethMap.test.tsx`; render with geo fixture (Huila `'41'` and Vaupés `'97'`) and production map; assert one `<path>` per feature; assert Huila path `fill` equals `colorScale(production)` (React prop, not DOM mutation); assert Huila `stroke-width` or class is distinct from Vaupés; mock `d3.select` to throw. *(spec: "D3 scale output → React SVG attrs", "Protagonist distinct stroke", "Non-protagonist default style", "No d3.select")*
-- [ ] 5.5 **GREEN** — Create `src/features/coffee-story/visualizations/ChoroplethMap.tsx`; accept `features: Feature[]`, `productionByDane: Map<string, number>`, `colorScale`, `highlightDaneCodes: string[]`, `geoPath`; render `<path d={geoPath(f)} fill={colorScale(val)} strokeWidth={isProtagonist ? 2 : 0.5} />`; zero `d3.select`.
-- [ ] 5.6 **VERIFY** — ChoroplethMap tests green.
+- [x] 5.4 **RED** — Create `src/features/coffee-story/visualizations/ChoroplethMap.test.tsx`; render with geo fixture (Huila `'41'` and Vaupés `'97'`) and production map; assert one `<path>` per feature; assert Huila path `fill` equals `colorScale(production)` (React prop, not DOM mutation); assert Huila `stroke-width` or class is distinct from Vaupés; mock `d3.select` to throw. *(spec: "D3 scale output → React SVG attrs", "Protagonist distinct stroke", "Non-protagonist default style", "No d3.select")*
+- [x] 5.5 **GREEN** — Create `src/features/coffee-story/visualizations/ChoroplethMap.tsx`; accept `features: Feature[]`, `productionByDane: Map<string, number>`, `colorScale`, `highlightDaneCodes: string[]`, `geoPath`; render `<path d={geoPath(f)} fill={colorScale(val)} strokeWidth={isProtagonist ? 2 : 0.5} />`; zero `d3.select`.
+- [x] 5.6 **VERIFY** — ChoroplethMap tests green.
 
 ### 5.3 — StickyVisualization
 
-- [ ] 5.7 **RED** — Create `src/features/coffee-story/visualizations/StickyVisualization.test.tsx`; spy on `useEffect` with empty deps — assert fires exactly once across multiple `activeChapterId` store updates; assert root node (`data-testid="sticky-viz"`) persists across chapter switches; assert `<LineChart>` when active chapter `source === 'FAO'`; assert `<ChoroplethMap>` when `source === 'EVA'` without root unmounting. *(spec: "Single mount — never unmounts", "D3 interpolation state preserved")*
-- [ ] 5.8 **GREEN** — Create `src/features/coffee-story/visualizations/StickyVisualization.tsx`; subscribe read-only to `useScrollStore(s => s.activeChapterId)`; outer wrapper with `data-testid="sticky-viz"` never unmounts; conditionally render `<LineChart>` or `<ChoroplethMap>` inside based on active chapter `viz` field; wire `useDataInterpolation` for smooth transitions.
-- [ ] 5.9 **VERIFY** — StickyVisualization tests green.
+- [x] 5.7 **RED** — Create `src/features/coffee-story/visualizations/StickyVisualization.test.tsx`; spy on `useEffect` with empty deps — assert fires exactly once across multiple `activeChapterId` store updates; assert root node (`data-testid="sticky-viz"`) persists across chapter switches; assert `<LineChart>` when active chapter `source === 'FAO'`; assert `<ChoroplethMap>` when `source === 'EVA'` without root unmounting. *(spec: "Single mount — never unmounts", "D3 interpolation state preserved")*
+- [x] 5.8 **GREEN** — Create `src/features/coffee-story/visualizations/StickyVisualization.tsx`; subscribe read-only to `useScrollStore(s => s.activeChapterId)`; outer wrapper with `data-testid="sticky-viz"` never unmounts; conditionally render `<LineChart>` or `<ChoroplethMap>` inside based on active chapter `viz` field; wire `useDataInterpolation` for smooth transitions.
+- [x] 5.9 **VERIFY** — StickyVisualization tests green.
 
 ---
 

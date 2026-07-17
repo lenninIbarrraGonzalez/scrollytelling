@@ -58,3 +58,16 @@ export type NationalSeries = YearDatum[]
 
 /** Full departmental production series for all departments. */
 export type DepartmentSeries = DepartmentProduction[]
+
+/**
+ * GeoJSON properties for a Colombia department feature.
+ * Defined here (domain) so visualizations depend only on domain types,
+ * not on the data/geo adapter internals.
+ */
+export interface DepartmentGeoProperties {
+  /** 2-digit DANE code — primary join key for EVA↔GeoJSON. */
+  DPTO_CCDGO: string
+  /** Department name as in the TopoJSON source. */
+  DPTO_CNMBR: string
+  [key: string]: unknown
+}
