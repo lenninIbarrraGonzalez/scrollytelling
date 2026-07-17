@@ -11,7 +11,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 // Fixtures
 // ---------------------------------------------------------------------------
 
-const FAO_CSV = `Entity,Code,Year,Coffee production (tonnes)
+const FAO_CSV = `Entity,Code,Year,Green coffee - Production (tonnes)
 Colombia,COL,1990,1065000
 Colombia,COL,1999,547000
 Colombia,COL,2005,682000

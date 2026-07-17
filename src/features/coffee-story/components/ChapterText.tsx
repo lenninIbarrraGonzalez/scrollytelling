@@ -30,7 +30,7 @@ export function ChapterText({ chapter, isActive }: ChapterTextProps) {
       {isActive && (
         <motion.div
           key={chapter.id}
-          data-chapter-id={chapter.id}
+          data-testid="chapter-text"
           variants={variants}
           initial="hidden"
           animate="visible"

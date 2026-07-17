@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest'
 import { parseFaoCSV } from './faoAdapter'
 
 // ---------------------------------------------------------------------------
-// Inline CSV fixture — mirrors OWiD coffee-production-by-region.csv format
-// Header: Entity,Code,Year,Coffee production (tonnes)
+// Inline CSV fixture — mirrors ACTUAL OWiD coffee-production-by-region.csv format
+// Header verified 2026-07-17: Entity,Code,Year,Green coffee - Production (tonnes)
 // ---------------------------------------------------------------------------
-const FIXTURE_CSV = `Entity,Code,Year,Coffee production (tonnes)
+const FIXTURE_CSV = `Entity,Code,Year,Green coffee - Production (tonnes)
 Colombia,COL,1990,1065000
 Colombia,COL,1995,900000
 Colombia,COL,1999,547000

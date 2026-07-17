@@ -16,8 +16,8 @@ import type { NationalSeries, YearDatum } from '../../domain/coffee'
 const FAO_YEAR_START = 1990
 const FAO_YEAR_END = 2006
 
-/** Column header for production tonnes — OWiD uses a verbose header. */
-const PRODUCTION_COLUMN = 'Coffee production (tonnes)'
+/** Column header for production tonnes — actual OWiD CSV header (verified 2026-07-17). */
+const PRODUCTION_COLUMN = 'Green coffee - Production (tonnes)'
 
 /**
  * Parse an OWiD/FAO CSV text into a NationalSeries for Colombia.

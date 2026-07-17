@@ -53,9 +53,9 @@ describe('ChapterText', () => {
     expect(motionEl?.nodeName).toBe('DIV')
   })
 
-  it('renders with a data-chapter-id attribute matching chapter.id', () => {
+  it('renders with a data-testid="chapter-text" attribute on the wrapper', () => {
     render(<ChapterText chapter={chapter} isActive={true} />)
-    const el = document.querySelector(`[data-chapter-id="${chapter.id}"]`)
+    const el = document.querySelector('[data-testid="chapter-text"]')
     expect(el).toBeInTheDocument()
   })
 
