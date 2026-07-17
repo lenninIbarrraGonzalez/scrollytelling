@@ -13,6 +13,7 @@ import { feature } from 'topojson-client'
 import type { FeatureCollection, Geometry } from 'geojson'
 import type { Topology } from 'topojson-specification'
 import { createCache } from '../cache'
+import type { DepartmentGeoProperties } from '../../domain/coffee'
 
 const TOPOJSON_URL =
   'https://raw.githubusercontent.com/caticoa3/colombia_mapa/master/colombia_2018_simplified.topojson'
@@ -20,18 +21,12 @@ const TOPOJSON_URL =
 /** TopoJSON object key for department-level polygons. */
 const TOPO_OBJECT_KEY = 'MGN_DPTO_POLITICO'
 
-/** Properties present on each department feature. */
-export interface DepartmentProperties {
-  /** 2-digit DANE department code — primary join key. */
-  DPTO_CCDGO: string
-  /** Department name in the TopoJSON (may lack accents). */
-  DPTO_CNMBR: string
-  [key: string]: unknown
-}
+/** Re-export domain type for callers who import from this module (backwards compat). */
+export type { DepartmentGeoProperties as DepartmentProperties } from '../../domain/coffee'
 
 export type ColombiaFeatureCollection = FeatureCollection<
   Geometry,
-  DepartmentProperties
+  DepartmentGeoProperties
 >
 
 // Module-level cache — one fetch per application session.
