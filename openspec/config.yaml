@@ -1,0 +1,56 @@
+schema: spec-driven
+
+context: |
+  Project: scrollytelling
+  Tech stack: React 18 + TypeScript + Vite + D3.js + Zustand + Framer Motion + IntersectionObserver API
+  Testing: Vitest + React Testing Library (proposed — greenfield project)
+  Style: Atomic design, container-presentational pattern, hexagonal architecture
+  Artifact store: openspec
+  Execution mode: interactive
+  Delivery strategy: ask-on-risk
+
+testing:
+  strict_tdd: true
+  test_runner: vitest
+  test_command: "npx vitest run"
+  watch_command: "npx vitest"
+  coverage_command: "npx vitest run --coverage"
+  layers:
+    unit: { available: true, tool: "Vitest" }
+    integration: { available: true, tool: "React Testing Library" }
+    e2e: { available: false, tool: null }
+  quality:
+    linter: { available: true, command: "npx eslint ." }
+    type_checker: { available: true, command: "npx tsc --noEmit" }
+    formatter: { available: true, command: "npx prettier --check ." }
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - State user-facing impact explicitly
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Group requirements by domain (ui, state, animation, data)
+  design:
+    - Include sequence diagrams for complex scroll/animation flows
+    - Document D3 binding patterns and Zustand store shape
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+    - Always include a test task before the implementation task (TDD)
+  apply:
+    guidelines:
+      - Follow existing code patterns
+      - Prefer composable hooks over component-local state
+      - D3 selections must be managed inside useEffect with cleanup
+    tdd: true
+    test_command: "npx vitest run"
+  verify:
+    test_command: "npx vitest run"
+    build_command: "npx vite build"
+    coverage_threshold: 80
+  archive:
+    - Warn before merging destructive deltas
+    - Update openspec/specs/ domain files after archive
