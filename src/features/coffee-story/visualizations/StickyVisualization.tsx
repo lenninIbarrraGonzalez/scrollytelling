@@ -13,7 +13,7 @@
 
 import type { GeoPath } from 'd3'
 import type { Feature, Geometry } from 'geojson'
-import type { NationalSeries, DepartmentSeries, DepartmentGeoProperties } from '../../../domain/coffee'
+import type { Viz, NationalSeries, DepartmentSeries, DepartmentGeoProperties } from '../../../domain/coffee'
 import { LineChart } from './LineChart'
 import { ChoroplethMap } from './ChoroplethMap'
 
@@ -26,11 +26,11 @@ interface StickyVisualizationProps {
   width: number
   height: number
   /**
-   * Explicit viz override ('line' | 'choropleth').
-   * When provided this takes precedence over the store-derived chapter mapping.
-   * Used in tests and by <Scrollytelling> to pass the active chapter's viz type.
+   * Accepts the full Viz union so new chapter types don't require a prop change.
+   * 'scatter' and 'slope' are not yet rendered — they fall through to ChoroplethMap
+   * until the dedicated components are wired in.
    */
-  activeViz?: 'line' | 'choropleth'
+  activeViz?: Viz
   /** Highlight codes for choropleth protagonist departments. */
   highlightDaneCodes?: string[]
   /** Annotations for line chart (e.g. La Niña 2021). */
