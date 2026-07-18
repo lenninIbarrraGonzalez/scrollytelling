@@ -55,6 +55,8 @@ interface LineChartProps {
   height: number
   annotations?: Annotation[]
   sourceLabel?: string
+  /** Y-axis label. Defaults to "Toneladas" when omitted. */
+  yAxisLabel?: string
 }
 
 export function LineChart({
@@ -63,6 +65,7 @@ export function LineChart({
   height,
   annotations = [],
   sourceLabel,
+  yAxisLabel,
 }: LineChartProps) {
   const innerWidth = width - MARGIN.left - MARGIN.right
   const innerHeight = height - MARGIN.top - MARGIN.bottom
@@ -205,7 +208,7 @@ export function LineChart({
           fill="#555"
           transform={`rotate(-90)`}
         >
-          Toneladas
+          {yAxisLabel ?? 'Toneladas'}
         </text>
 
         <text

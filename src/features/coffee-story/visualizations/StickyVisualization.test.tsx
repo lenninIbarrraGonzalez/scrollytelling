@@ -244,6 +244,33 @@ describe('StickyVisualization', () => {
     expect(screen.getByTestId('slope-chart')).toBeInTheDocument()
   })
 
+  // ---------------------------------------------------------------------------
+  // PR3: yAxisLabel threading to LineChart
+  // ---------------------------------------------------------------------------
+
+  it('passes yAxisLabel to LineChart when provided', () => {
+    render(
+      <StickyVisualization
+        nationalSeries={nationalSeries}
+        departmentSeries={departmentSeries}
+        geoFeatures={geoFeatures}
+        colorScale={colorScale}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+        activeViz="line"
+        yAxisLabel="t/ha"
+      />,
+    )
+
+    // LineChart should render the custom Y-axis label instead of "Toneladas"
+    const texts = Array.from(document.querySelectorAll('text'))
+    const hasCustomLabel = texts.some((el) => el.textContent?.trim() === 't/ha')
+    const hasToneladas = texts.some((el) => el.textContent?.trim() === 'Toneladas')
+    expect(hasCustomLabel).toBe(true)
+    expect(hasToneladas).toBe(false)
+  })
+
   it('renders nothing (null) for an unknown activeViz value', () => {
     render(
       <StickyVisualization

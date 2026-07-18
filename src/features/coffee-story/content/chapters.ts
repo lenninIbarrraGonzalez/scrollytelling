@@ -122,4 +122,17 @@ export const chapters: Chapter[] = [
       'muestran el desplazamiento de cada departamento.',
     highlightDaneCodes: PROTAGONIST_CODES,
   },
+  {
+    id: 'chapter-8',
+    index: 7,
+    source: 'EVA',
+    viz: 'line',
+    seriesMode: 'weighted-yield',
+    title: 'La revolución silenciosa',
+    body:
+      'Menos tierra, más café. Desde 2008 el rendimiento nacional ha crecido sostenidamente: ' +
+      'la variedad Castillo, más resistente a la roya y al clima, transformó la productividad ' +
+      'colombiana sin que el área sembrada creciera en la misma proporción.',
+    highlightDaneCodes: PROTAGONIST_CODES,
+  },
 ]

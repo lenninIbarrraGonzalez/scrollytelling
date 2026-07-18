@@ -58,19 +58,19 @@ Chain strategy: stacked-to-main
 
 ## Phase 3 — LineChart yAxisLabel + Chapter 8 + Weighted-Yield Wire-up (PR3)
 
-- [ ] 3.1 **RED** — In `src/features/coffee-story/visualizations/LineChart.test.tsx`: add failing test — renders with custom `yAxisLabel` prop (e.g., `'t/ha'`) in Y-axis label element; default renders `'Toneladas'` when prop omitted (spec: LineChart yAxisLabel)
-- [ ] 3.2 **RED** — In `src/features/coffee-story/content/chapters.test.ts`: add assertion that `chapters[7].seriesMode === 'weighted-yield'`; assert `chapters[7].source === 'EVA'`
-- [ ] 3.3 **RED** — In `src/features/coffee-story/visualizations/StickyVisualization.test.tsx`: add failing case — `activeViz='line'` with `seriesMode='weighted-yield'` passes `yAxisLabel='t/ha'` to `LineChart`
-- [ ] 3.4 Run `npm run check` — confirm **RED**
-- [ ] 3.5 **GREEN** — Modify `src/features/coffee-story/visualizations/LineChart.tsx`: add optional `yAxisLabel?: string` prop defaulting to `'Toneladas'`; replace hardcoded `"Toneladas"` string in Y-axis label with the prop value
-- [ ] 3.6 **GREEN** — Modify `src/features/coffee-story/content/chapters.ts`: add chapter 8 at index 7 with `viz: 'line'`, `seriesMode: 'weighted-yield'`, `source: 'EVA'`
-- [ ] 3.7 **GREEN** — Modify `src/features/coffee-story/components/Scrollytelling.tsx`: add `useMemo` for `weightedYieldSeries` (`buildWeightedYieldSeries(departmentSeries)`); in `StickyVisualization` call, when `activeChapter.seriesMode === 'weighted-yield'` pass `data={weightedYieldSeries}` and `yAxisLabel='t/ha'`
-- [ ] 3.8 **GREEN** — Modify `src/features/coffee-story/visualizations/StickyVisualization.tsx`: thread `yAxisLabel` prop to `LineChart` when `seriesMode === 'weighted-yield'`
-- [ ] 3.9 Run `npm run check` — confirm **GREEN** (full suite including all 3 PR slices passes)
+- [x] 3.1 **RED** — In `src/features/coffee-story/visualizations/LineChart.test.tsx`: add failing test — renders with custom `yAxisLabel` prop (e.g., `'t/ha'`) in Y-axis label element; default renders `'Toneladas'` when prop omitted (spec: LineChart yAxisLabel)
+- [x] 3.2 **RED** — In `src/features/coffee-story/content/chapters.test.ts`: add assertion that `chapters[7].seriesMode === 'weighted-yield'`; assert `chapters[7].source === 'EVA'`
+- [x] 3.3 **RED** — In `src/features/coffee-story/visualizations/StickyVisualization.test.tsx`: add failing case — `activeViz='line'` with `yAxisLabel='t/ha'` passes label to `LineChart`
+- [x] 3.4 Run `npm run check` — confirmed **RED** (8 failures)
+- [x] 3.5 **GREEN** — Modify `src/features/coffee-story/visualizations/LineChart.tsx`: add optional `yAxisLabel?: string` prop defaulting to `'Toneladas'`; replace hardcoded `"Toneladas"` string in Y-axis label with the prop value
+- [x] 3.6 **GREEN** — Modify `src/features/coffee-story/content/chapters.ts`: add chapter 8 at index 7 with `viz: 'line'`, `seriesMode: 'weighted-yield'`, `source: 'EVA'`
+- [x] 3.7 **GREEN** — Modify `src/features/coffee-story/components/Scrollytelling.tsx`: add `useMemo` for `weightedYieldSeries` (`buildWeightedYieldSeries(departmentSeries)`); `lineData` substitution when `seriesMode === 'weighted-yield'`; pass `yAxisLabel` to `StickyVisualization`
+- [x] 3.8 **GREEN** — Modify `src/features/coffee-story/visualizations/StickyVisualization.tsx`: add `yAxisLabel?` prop; thread to `LineChart`
+- [x] 3.9 Run `npm run check` — confirmed **GREEN** (245 tests, 0 TS errors)
 
 ---
 
 ## Phase 4 — Cross-Cutting Verification
 
-- [ ] 4.1 Confirm `npm run check` exits 0 with all selector tests (11 scenarios), component tests (Scatter/Slope/LineChart), integration tests (StickyVisualization branches), chapter tests (length 8, indexes, allowlist, seriesMode), and staticGuards (no `d3.select` in new files) passing
-- [ ] 4.2 Verify open question from design: confirm `departmentSeries` adapter emits `rendimiento` in t/ha (not kg/ha) before axis labels `"Rendimiento (t/ha)"` and `yAxisLabel='t/ha'` are correct — escalate if unit mismatch found
+- [x] 4.1 Confirm `npm run check` exits 0 with all selector tests (11 scenarios), component tests (Scatter/Slope/LineChart), integration tests (StickyVisualization branches), chapter tests (length 8, indexes, allowlist, seriesMode), and staticGuards (no `d3.select` in new files) passing — 245 tests, 0 TS errors
+- [x] 4.2 Verify open question from design: EVA dataset field is `rendimiento_t_ha` → already t/ha; `buildWeightedYieldSeries` computes Σprod(t)/Σarea(ha) → t/ha; axis label `yAxisLabel='t/ha'` is correct — no escalation needed

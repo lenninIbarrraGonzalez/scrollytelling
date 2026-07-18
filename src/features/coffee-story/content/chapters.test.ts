@@ -12,8 +12,8 @@ import type { Chapter } from '../../../domain/coffee'
 import { chapters } from './chapters'
 
 describe('chapters content', () => {
-  it('exports exactly 7 chapters', () => {
-    expect(chapters).toHaveLength(7)
+  it('exports exactly 8 chapters', () => {
+    expect(chapters).toHaveLength(8)
   })
 
   it('each element satisfies the Chapter type shape', () => {
@@ -28,9 +28,9 @@ describe('chapters content', () => {
     }
   })
 
-  it('chapter indexes are 0–6 in order', () => {
+  it('chapter indexes are 0–7 in order', () => {
     const indexes = chapters.map((ch) => ch.index)
-    expect(indexes).toEqual([0, 1, 2, 3, 4, 5, 6])
+    expect(indexes).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
   })
 
   it('chapters[0].source is FAO (national series, 1990s auge)', () => {
@@ -114,6 +114,26 @@ describe('chapters content', () => {
     const protagonistCodes = ['41', '17', '63', '66', '05', '73']
     for (const code of protagonistCodes) {
       expect(chapters[6].highlightDaneCodes).toContain(code)
+    }
+  })
+
+  // PR3 — chapter 8 (index 7)
+  it('chapters[7].viz is line', () => {
+    expect(chapters[7].viz).toBe('line')
+  })
+
+  it('chapters[7].seriesMode is weighted-yield', () => {
+    expect(chapters[7].seriesMode).toBe('weighted-yield')
+  })
+
+  it('chapters[7].source is EVA', () => {
+    expect(chapters[7].source).toBe('EVA')
+  })
+
+  it('chapters[7].highlightDaneCodes includes all protagonist codes', () => {
+    const protagonistCodes = ['05', '17', '41', '63', '66', '73']
+    for (const code of protagonistCodes) {
+      expect(chapters[7].highlightDaneCodes).toContain(code)
     }
   })
 })

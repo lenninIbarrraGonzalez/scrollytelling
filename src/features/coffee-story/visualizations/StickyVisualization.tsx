@@ -46,6 +46,8 @@ interface StickyVisualizationProps {
   slopeYearA?: number
   /** Year labels for slope chart. */
   slopeYearB?: number
+  /** Y-axis label for LineChart. Defaults to "Toneladas" when omitted. */
+  yAxisLabel?: string
 }
 
 /**
@@ -88,6 +90,7 @@ export function StickyVisualization({
   slopeData = [],
   slopeYearA = 2007,
   slopeYearB = 2024,
+  yAxisLabel,
 }: StickyVisualizationProps) {
   const productionByDane = buildProductionByDane(departmentSeries)
 
@@ -103,6 +106,7 @@ export function StickyVisualization({
           height={height}
           annotations={annotations}
           sourceLabel={sourceLabel}
+          yAxisLabel={yAxisLabel}
         />
       ) : activeViz === 'choropleth' ? (
         <ChoroplethMap

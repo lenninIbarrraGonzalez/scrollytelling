@@ -187,6 +187,17 @@ describe('LineChart', () => {
       expect(screen.getByText('Toneladas')).toBeInTheDocument()
     })
 
+    it('renders a custom yAxisLabel when provided', () => {
+      render(<LineChart data={makeSeries()} width={600} height={400} yAxisLabel="t/ha" />)
+      expect(screen.getByText('t/ha')).toBeInTheDocument()
+      expect(screen.queryByText('Toneladas')).not.toBeInTheDocument()
+    })
+
+    it('defaults to "Toneladas" when yAxisLabel is omitted', () => {
+      render(<LineChart data={makeSeries()} width={600} height={400} />)
+      expect(screen.getByText('Toneladas')).toBeInTheDocument()
+    })
+
     it('renders an X-axis title "Año"', () => {
       render(<LineChart data={makeSeries()} width={600} height={400} />)
       expect(screen.getByText('Año')).toBeInTheDocument()

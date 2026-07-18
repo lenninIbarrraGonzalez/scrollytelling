@@ -27,7 +27,7 @@ import { useActiveChapter } from '../hooks/useActiveChapter'
 import { useD3Scales } from '../visualizations/useD3Scales'
 import { StickyVisualization } from '../visualizations/StickyVisualization'
 import { ChapterText } from './ChapterText'
-import { buildScatterData, buildSlopeData, SLOPE_TOP_N } from '../selectors/coffeeSelectors'
+import { buildScatterData, buildSlopeData, buildWeightedYieldSeries, SLOPE_TOP_N } from '../selectors/coffeeSelectors'
 import './Scrollytelling.css'
 
 // Default SVG dimensions — consistent across all chapters.
@@ -101,6 +101,12 @@ export function Scrollytelling({
     [departmentSeries, activeChapter.viz, activeChapter.dataYear],
   )
 
+  // Weighted yield series for chapter 8 — computed once over full departmentSeries.
+  const weightedYieldSeries = useMemo(
+    () => buildWeightedYieldSeries(departmentSeries),
+    [departmentSeries],
+  )
+
   // Slope data for chapter 7 (SlopeChart).
   const slopeData = useMemo(
     () =>
@@ -114,6 +120,19 @@ export function Scrollytelling({
         : [],
     [departmentSeries, activeChapter.viz, activeChapter.rankingYears],
   )
+
+  // For chapter 8 (seriesMode = weighted-yield), substitute the national line data
+  // with weighted yield values mapped to the same NationalSeries shape.
+  const lineData = useMemo(
+    () =>
+      activeChapter.seriesMode === 'weighted-yield'
+        ? weightedYieldSeries.map((d) => ({ year: d.year, production: d.yield }))
+        : nationalSeries,
+    [activeChapter.seriesMode, weightedYieldSeries, nationalSeries],
+  )
+
+  // Y-axis label: override to t/ha for the weighted-yield chapter.
+  const yAxisLabel = activeChapter.seriesMode === 'weighted-yield' ? 't/ha' : undefined
 
   // D3 scale math — computed here and passed down to keep viz components pure.
   const productionExtent = useMemo(() => {
@@ -155,7 +174,7 @@ export function Scrollytelling({
     >
       <div className="scrollytelling-viz-column">
         <StickyVisualization
-          nationalSeries={nationalSeries}
+          nationalSeries={lineData}
           departmentSeries={chapterDepartmentSeries}
           geoFeatures={geoFeatures as { features: Feature<Geometry, DepartmentGeoProperties>[] }}
           colorScale={colorScale}
@@ -170,6 +189,7 @@ export function Scrollytelling({
           slopeData={slopeData}
           slopeYearA={activeChapter.rankingYears?.[0] ?? 2007}
           slopeYearB={activeChapter.rankingYears?.[1] ?? 2024}
+          yAxisLabel={yAxisLabel}
         />
       </div>
 
