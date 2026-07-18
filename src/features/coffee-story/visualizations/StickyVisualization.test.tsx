@@ -12,13 +12,27 @@
 
 import { describe, it, expect, afterEach } from 'vitest'
 import { render, screen, cleanup, act } from '@testing-library/react'
-import type { NationalSeries, DepartmentSeries } from '../../../domain/coffee'
+import type { NationalSeries, DepartmentSeries, ScatterDatum, SlopeDatum } from '../../../domain/coffee'
 import { scaleSequential, interpolateYlOrRd, geoMercator, geoPath } from 'd3'
 import type { ColombiaFeatureCollection } from '../../../data/geo/colombiaGeoLoader'
 
 // RED: import fails until module exists.
 import { StickyVisualization } from './StickyVisualization'
 import { useScrollStore } from '../store/scrollStore'
+
+// ---------------------------------------------------------------------------
+// Fixture data for PR2 tests
+// ---------------------------------------------------------------------------
+
+const scatterFixture: ScatterDatum[] = [
+  { daneCode: '41', department: 'Huila', production: 300000, areaHarvested: 120000, yield: 2.5 },
+  { daneCode: '17', department: 'Caldas', production: 100000, areaHarvested: 50000, yield: 2.0 },
+]
+
+const slopeFixture: SlopeDatum[] = [
+  { daneCode: '41', department: 'Huila', rankA: 4, rankB: 1, productionA: 200000, productionB: 350000 },
+  { daneCode: '17', department: 'Caldas', rankA: 1, rankB: 2, productionA: 300000, productionB: 300000 },
+]
 
 // ---------------------------------------------------------------------------
 // Fixture data
@@ -186,5 +200,66 @@ describe('StickyVisualization', () => {
     expect(screen.getByTestId('sticky-viz')).toBe(stickyEl)
     // Now choropleth paths are visible
     expect(document.querySelectorAll('path[data-dane-code]').length).toBeGreaterThan(0)
+  })
+
+  // ---------------------------------------------------------------------------
+  // PR2: new viz branches
+  // ---------------------------------------------------------------------------
+
+  it('renders ScatterBubbleChart when activeViz="scatter"', () => {
+    render(
+      <StickyVisualization
+        nationalSeries={nationalSeries}
+        departmentSeries={departmentSeries}
+        geoFeatures={geoFeatures}
+        colorScale={colorScale}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+        activeViz="scatter"
+        scatterData={scatterFixture}
+      />,
+    )
+
+    // ScatterBubbleChart renders an SVG with data-testid="scatter-chart"
+    expect(screen.getByTestId('scatter-chart')).toBeInTheDocument()
+  })
+
+  it('renders SlopeChart when activeViz="slope"', () => {
+    render(
+      <StickyVisualization
+        nationalSeries={nationalSeries}
+        departmentSeries={departmentSeries}
+        geoFeatures={geoFeatures}
+        colorScale={colorScale}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+        activeViz="slope"
+        slopeData={slopeFixture}
+      />,
+    )
+
+    // SlopeChart renders an SVG with data-testid="slope-chart"
+    expect(screen.getByTestId('slope-chart')).toBeInTheDocument()
+  })
+
+  it('renders nothing (null) for an unknown activeViz value', () => {
+    render(
+      <StickyVisualization
+        nationalSeries={nationalSeries}
+        departmentSeries={departmentSeries}
+        geoFeatures={geoFeatures}
+        colorScale={colorScale}
+        geoPath={geoPathGenerator}
+        width={400}
+        height={400}
+        activeViz={'unknown' as never}
+      />,
+    )
+
+    const wrapper = screen.getByTestId('sticky-viz')
+    // No SVG should be rendered inside the wrapper
+    expect(wrapper.querySelector('svg')).toBeNull()
   })
 })

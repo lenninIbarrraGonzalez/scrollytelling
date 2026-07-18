@@ -41,18 +41,18 @@ Chain strategy: stacked-to-main
 
 ## Phase 2 — Scatter + Slope Components + Sticky Refactor (PR2)
 
-- [ ] 2.1 **RED** — In `src/features/coffee-story/visualizations/StickyVisualization.test.tsx`: add failing cases for `activeViz='scatter'` renders `ScatterBubbleChart`, `activeViz='slope'` renders `SlopeChart`, `activeViz='unknown'` renders nothing / null (spec: no silent fallback)
-- [ ] 2.2 **RED** — In `src/features/coffee-story/content/chapters.test.ts`: update length assertion to `8`, add index assertions for `[5]`, `[6]`, `[7]`, add viz-allowlist assertion covering `'scatter'` and `'slope'`
-- [ ] 2.3 **RED** — Create `src/features/coffee-story/visualizations/ScatterBubbleChart.test.tsx`: failing tests — renders bubbles for valid data, excludes zero-area entry, protagonist has distinct stroke, tooltip shown on enter (spec: ScatterBubbleChart scenarios)
-- [ ] 2.4 **RED** — Create `src/features/coffee-story/visualizations/SlopeChart.test.tsx`: failing tests — renders line per datum, protagonist has bold/distinct style, left+right labels rendered (spec: SlopeChart scenarios)
-- [ ] 2.5 **RED** — In `src/test/staticGuards.test.ts`: add no-`d3.select` guard covering `ScatterBubbleChart.tsx` and `SlopeChart.tsx` (spec: no d3.select in new viz files)
-- [ ] 2.6 Run `npm run check` — confirm **RED**
-- [ ] 2.7 **GREEN** — Modify `src/features/coffee-story/visualizations/StickyVisualization.tsx`: replace binary ternary with explicit chain (`'line'` → `LineChart`, `'choropleth'` → `ChoroplethMap`, `'scatter'` → `ScatterBubbleChart`, `'slope'` → `SlopeChart`, default → `null`); add `scatterData?` and `slopeData?` props; widen `activeViz` prop type to `Viz`
-- [ ] 2.8 **GREEN** — Create `src/features/coffee-story/visualizations/ScatterBubbleChart.tsx`: React-owns-SVG; D3 `scaleLinear` X(areaHarvested)/Y(yield), `scaleSqrt` radius(production); `motion.circle` scale 0→1; protagonist stroke `#6b4c11`; `useState` tooltip; axes via JSX `scale.ticks(5)`; labels "Área cosechada (ha)"/"Rendimiento (t/ha)"
-- [ ] 2.9 **GREEN** — Create `src/features/coffee-story/visualizations/SlopeChart.tsx`: React-owns-SVG; D3 `scaleLinear` Y `[1,maxRank]→[top,bottom]`; `motion.path` pathLength 0→1 per datum; left/right dot + label columns; protagonist bold+`#6b4c11`, others `#aaa`; no tooltip; no `d3.select`
-- [ ] 2.10 **GREEN** — Modify `src/features/coffee-story/content/chapters.ts`: add chapter objects at indexes 5, 6, 7 with `viz: 'scatter'`, `viz: 'slope'`, and correct `rankingYears`; set `source: 'EVA'` on all three; `chapters[6].rankingYears = [2007, 2024]`
-- [ ] 2.11 **GREEN** — Modify `src/features/coffee-story/components/Scrollytelling.tsx`: add `useMemo` for `scatterData` (`buildScatterData(departmentSeries, dataYear)`) and `slopeData` (`buildSlopeData(departmentSeries, yearA, yearB, SLOPE_TOP_N)`); pass both to `StickyVisualization`
-- [ ] 2.12 Run `npm run check` — confirm **GREEN** (all PR2 tests pass, static guard passes)
+- [x] 2.1 **RED** — In `src/features/coffee-story/visualizations/StickyVisualization.test.tsx`: add failing cases for `activeViz='scatter'` renders `ScatterBubbleChart`, `activeViz='slope'` renders `SlopeChart`, `activeViz='unknown'` renders nothing / null (spec: no silent fallback)
+- [x] 2.2 **RED** — In `src/features/coffee-story/content/chapters.test.ts`: update length assertion to `8`, add index assertions for `[5]`, `[6]`, `[7]`, add viz-allowlist assertion covering `'scatter'` and `'slope'`
+- [x] 2.3 **RED** — Create `src/features/coffee-story/visualizations/ScatterBubbleChart.test.tsx`: failing tests — renders bubbles for valid data, excludes zero-area entry, protagonist has distinct stroke, tooltip shown on enter (spec: ScatterBubbleChart scenarios)
+- [x] 2.4 **RED** — Create `src/features/coffee-story/visualizations/SlopeChart.test.tsx`: failing tests — renders line per datum, protagonist has bold/distinct style, left+right labels rendered (spec: SlopeChart scenarios)
+- [x] 2.5 **RED** — In `src/test/staticGuards.test.ts`: add no-`d3.select` guard covering `ScatterBubbleChart.tsx` and `SlopeChart.tsx` (spec: no d3.select in new viz files)
+- [x] 2.6 Run `npm run check` — confirm **RED**
+- [x] 2.7 **GREEN** — Modify `src/features/coffee-story/visualizations/StickyVisualization.tsx`: replace binary ternary with explicit chain (`'line'` → `LineChart`, `'choropleth'` → `ChoroplethMap`, `'scatter'` → `ScatterBubbleChart`, `'slope'` → `SlopeChart`, default → `null`); add `scatterData?` and `slopeData?` props; widen `activeViz` prop type to `Viz`
+- [x] 2.8 **GREEN** — Create `src/features/coffee-story/visualizations/ScatterBubbleChart.tsx`: React-owns-SVG; D3 `scaleLinear` X(areaHarvested)/Y(yield), `scaleSqrt` radius(production); `motion.circle` scale 0→1; protagonist stroke `#6b4c11`; `useState` tooltip; axes via JSX `scale.ticks(5)`; labels "Área cosechada (ha)"/"Rendimiento (t/ha)"
+- [x] 2.9 **GREEN** — Create `src/features/coffee-story/visualizations/SlopeChart.tsx`: React-owns-SVG; D3 `scaleLinear` Y `[1,maxRank]→[top,bottom]`; `motion.path` pathLength 0→1 per datum; left/right dot + label columns; protagonist bold+`#6b4c11`, others `#aaa`; no tooltip; no `d3.select`
+- [x] 2.10 **GREEN** — Modify `src/features/coffee-story/content/chapters.ts`: add chapter objects at indexes 5, 6, 7 with `viz: 'scatter'`, `viz: 'slope'`, and correct `rankingYears`; set `source: 'EVA'` on all three; `chapters[6].rankingYears = [2007, 2024]`
+- [x] 2.11 **GREEN** — Modify `src/features/coffee-story/components/Scrollytelling.tsx`: add `useMemo` for `scatterData` (`buildScatterData(departmentSeries, dataYear)`) and `slopeData` (`buildSlopeData(departmentSeries, yearA, yearB, SLOPE_TOP_N)`); pass both to `StickyVisualization`
+- [x] 2.12 Run `npm run check` — confirm **GREEN** (all PR2 tests pass, static guard passes)
 
 ---
 

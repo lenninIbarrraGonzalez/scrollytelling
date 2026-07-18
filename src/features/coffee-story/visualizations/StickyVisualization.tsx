@@ -5,7 +5,8 @@
  * - Mounts ONCE and never unmounts between chapter changes.
  * - Purely presentational: receives activeViz from the parent <Scrollytelling>
  *   container, which is the Zustand store subscriber. No direct store access here.
- * - Switches between <LineChart> and <ChoroplethMap> without unmounting the wrapper.
+ * - Dispatches to LineChart, ChoroplethMap, ScatterBubbleChart, or SlopeChart
+ *   via an explicit null-default chain — no binary fallback.
  *
  * The sticky wrapper preserves D3 interpolation state across chapters because
  * React never destroys/recreates it — only the child visualization changes.
@@ -13,9 +14,11 @@
 
 import type { GeoPath } from 'd3'
 import type { Feature, Geometry } from 'geojson'
-import type { Viz, NationalSeries, DepartmentSeries, DepartmentGeoProperties } from '../../../domain/coffee'
+import type { Viz, NationalSeries, DepartmentSeries, DepartmentGeoProperties, ScatterDatum, SlopeDatum } from '../../../domain/coffee'
 import { LineChart } from './LineChart'
 import { ChoroplethMap } from './ChoroplethMap'
+import { ScatterBubbleChart } from './ScatterBubbleChart'
+import { SlopeChart } from './SlopeChart'
 
 interface StickyVisualizationProps {
   nationalSeries: NationalSeries
@@ -25,13 +28,9 @@ interface StickyVisualizationProps {
   geoPath: GeoPath<unknown, Feature<Geometry, DepartmentGeoProperties>>
   width: number
   height: number
-  /**
-   * Accepts the full Viz union so new chapter types don't require a prop change.
-   * 'scatter' and 'slope' are not yet rendered — they fall through to ChoroplethMap
-   * until the dedicated components are wired in.
-   */
+  /** Accepts the full Viz union — explicit chain renders the correct component or null. */
   activeViz?: Viz
-  /** Highlight codes for choropleth protagonist departments. */
+  /** Highlight codes for choropleth/scatter/slope protagonist departments. */
   highlightDaneCodes?: string[]
   /** Annotations for line chart (e.g. La Niña 2021). */
   annotations?: { year: number; label: string }[]
@@ -39,6 +38,14 @@ interface StickyVisualizationProps {
   sourceLabel?: string
   /** Production domain extent [min, max] for the choropleth color legend. */
   domainExtent?: [number, number]
+  /** Scatter data for chapter 6 ScatterBubbleChart. */
+  scatterData?: ScatterDatum[]
+  /** Slope data for chapter 7 SlopeChart. */
+  slopeData?: SlopeDatum[]
+  /** Year labels for slope chart. */
+  slopeYearA?: number
+  /** Year labels for slope chart. */
+  slopeYearB?: number
 }
 
 /**
@@ -77,6 +84,10 @@ export function StickyVisualization({
   annotations = [],
   sourceLabel,
   domainExtent,
+  scatterData = [],
+  slopeData = [],
+  slopeYearA = 2007,
+  slopeYearB = 2024,
 }: StickyVisualizationProps) {
   const productionByDane = buildProductionByDane(departmentSeries)
 
@@ -93,7 +104,7 @@ export function StickyVisualization({
           annotations={annotations}
           sourceLabel={sourceLabel}
         />
-      ) : (
+      ) : activeViz === 'choropleth' ? (
         <ChoroplethMap
           features={geoFeatures.features}
           productionByDane={productionByDane}
@@ -104,7 +115,23 @@ export function StickyVisualization({
           height={height}
           domainExtent={domainExtent}
         />
-      )}
+      ) : activeViz === 'scatter' ? (
+        <ScatterBubbleChart
+          data={scatterData}
+          width={width}
+          height={height}
+          highlightDaneCodes={highlightDaneCodes}
+        />
+      ) : activeViz === 'slope' ? (
+        <SlopeChart
+          data={slopeData}
+          width={width}
+          height={height}
+          yearA={slopeYearA}
+          yearB={slopeYearB}
+          highlightDaneCodes={highlightDaneCodes}
+        />
+      ) : null}
     </div>
   )
 }

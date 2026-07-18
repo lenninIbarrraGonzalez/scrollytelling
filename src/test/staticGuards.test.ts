@@ -66,6 +66,32 @@ describe('Static guard: no d3.select in visualization layer', () => {
     expect(source).not.toContain('d3.select(')
     expect(source).not.toContain('.transition(')
   })
+
+  it('ScatterBubbleChart.tsx has no d3.select call', async () => {
+    const modules = import.meta.glob(
+      '../features/coffee-story/visualizations/ScatterBubbleChart.tsx',
+      { query: '?raw', import: 'default', eager: true },
+    )
+    const raw = modules['../features/coffee-story/visualizations/ScatterBubbleChart.tsx'] as string
+    const source = raw
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\/\/.*/g, '')
+    expect(source).not.toContain('d3.select(')
+    expect(source).not.toContain('.transition(')
+  })
+
+  it('SlopeChart.tsx has no d3.select call', async () => {
+    const modules = import.meta.glob(
+      '../features/coffee-story/visualizations/SlopeChart.tsx',
+      { query: '?raw', import: 'default', eager: true },
+    )
+    const raw = modules['../features/coffee-story/visualizations/SlopeChart.tsx'] as string
+    const source = raw
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\/\/.*/g, '')
+    expect(source).not.toContain('d3.select(')
+    expect(source).not.toContain('.transition(')
+  })
 })
 
 // ---------------------------------------------------------------------------
