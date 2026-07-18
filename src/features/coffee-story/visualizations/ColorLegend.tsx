@@ -18,6 +18,7 @@ interface ColorLegendProps {
   domainExtent: [number, number]
   width?: number
   steps?: number
+  label?: string
 }
 
 export function ColorLegend({
@@ -25,12 +26,12 @@ export function ColorLegend({
   domainExtent,
   width = 200,
   steps = 6,
+  label,
 }: ColorLegendProps) {
   const [min, max] = domainExtent
   const swatchWidth = width / steps
   const swatchHeight = 12
 
-  // Sample values evenly across the domain extent.
   const sampleValues = Array.from({ length: steps }, (_, i) => {
     const t = steps === 1 ? 0 : i / (steps - 1)
     return min + t * (max - min)
@@ -38,6 +39,11 @@ export function ColorLegend({
 
   return (
     <g>
+      {label && (
+        <text x={width / 2} y={-4} textAnchor="middle" fontSize={10} fill="#555">
+          {label}
+        </text>
+      )}
       {sampleValues.map((value, i) => (
         <rect
           key={i}

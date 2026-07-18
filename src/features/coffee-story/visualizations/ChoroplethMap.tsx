@@ -22,6 +22,7 @@
 import { useState, useRef } from 'react'
 import type { Feature, Geometry } from 'geojson'
 import type { GeoPath } from 'd3'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { DepartmentGeoProperties } from '../../../domain/coffee'
 import { ColorLegend } from './ColorLegend'
 
@@ -55,15 +56,47 @@ export function ChoroplethMap({
 }: ChoroplethMapProps) {
   const [hoveredDane, setHoveredDane] = useState<string | null>(null)
   const [tip, setTip] = useState<TipState | null>(null)
+  const [hasInteracted, setHasInteracted] = useState(false)
   const svgRef = useRef<SVGSVGElement>(null)
 
   return (
+    <div style={{ position: 'relative' }}>
+    <AnimatePresence>
+      {!hasInteracted && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.25 }}
+          style={{
+            position: 'absolute',
+            bottom: 56,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 10,
+            background: 'rgba(44, 24, 16, 0.78)',
+            color: '#fff',
+            fontSize: '0.7rem',
+            letterSpacing: '0.07em',
+            textTransform: 'uppercase',
+            padding: '5px 12px',
+            borderRadius: 999,
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap',
+          }}
+          aria-hidden="true"
+        >
+          ✦ Explora el mapa
+        </motion.div>
+      )}
+    </AnimatePresence>
     <svg
       ref={svgRef}
       width={width}
       height={height}
       role="img"
       aria-label="Colombian coffee production choropleth map"
+      onTouchStart={() => setHasInteracted(true)}
     >
       {features.map((feature) => {
         const daneCode = feature.properties.DPTO_CCDGO
@@ -84,9 +117,10 @@ export function ChoroplethMap({
             stroke={isHovered ? '#333' : '#fff'}
             strokeWidth={isHovered ? 2.5 : isProtagonist ? 2 : 0.5}
             style={{ transition: 'fill 300ms ease' }}
-            aria-label={`${departmentName}: ${production.toLocaleString()} tonnes`}
+            aria-label={`${departmentName}: ${production.toLocaleString()} toneladas`}
             onMouseEnter={(e) => {
               setHoveredDane(daneCode)
+              if (!hasInteracted) setHasInteracted(true)
               const { left = 0, top = 0 } = svgRef.current?.getBoundingClientRect() ?? {}
               setTip({
                 x: e.clientX - left,
@@ -122,20 +156,29 @@ export function ChoroplethMap({
             {tip.name}
           </text>
           <text x={6} y={14} fontSize={11} fill="#555">
-            {tip.production.toLocaleString('en-US')} tonnes
+            {tip.production.toLocaleString('en-US')} toneladas
           </text>
         </g>
       )}
 
-      {/* Color legend — rendered when domainExtent is provided */}
-      {domainExtent && (
-        <g transform={`translate(${width - 220}, ${height - 36})`}>
+    </svg>
+
+    {/* Color legend — below the map SVG, centered */}
+    {domainExtent && (
+      <svg
+        width={220}
+        height={48}
+        style={{ display: 'block', margin: '6px auto 0' }}
+      >
+        <g transform="translate(0, 16)">
           <ColorLegend
             colorScale={colorScale}
             domainExtent={domainExtent}
+            label="Toneladas"
           />
         </g>
-      )}
-    </svg>
+      </svg>
+    )}
+    </div>
   )
 }

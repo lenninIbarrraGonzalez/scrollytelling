@@ -182,14 +182,14 @@ describe('LineChart', () => {
       expect(gridlines.length).toBeGreaterThan(0)
     })
 
-    it('renders a Y-axis title "Tonnes"', () => {
+    it('renders a Y-axis title "Toneladas"', () => {
       render(<LineChart data={makeSeries()} width={600} height={400} />)
-      expect(screen.getByText('Tonnes')).toBeInTheDocument()
+      expect(screen.getByText('Toneladas')).toBeInTheDocument()
     })
 
-    it('renders an X-axis title "Year"', () => {
+    it('renders an X-axis title "Año"', () => {
       render(<LineChart data={makeSeries()} width={600} height={400} />)
-      expect(screen.getByText('Year')).toBeInTheDocument()
+      expect(screen.getByText('Año')).toBeInTheDocument()
     })
   })
 

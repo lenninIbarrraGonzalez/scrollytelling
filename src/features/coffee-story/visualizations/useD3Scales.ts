@@ -13,7 +13,7 @@
  */
 
 import { useMemo } from 'react'
-import { scaleLinear, scaleSequential, interpolateYlOrRd } from 'd3'
+import { scaleLinear, scaleSequential, interpolateOrRd } from 'd3'
 
 export interface D3ScalesInput {
   /** [min, max] of the production/value domain. */
@@ -51,7 +51,7 @@ export function useD3Scales({ domainExtent, xRange, yRange }: D3ScalesInput): D3
   )
 
   const colorScale = useMemo(
-    () => scaleSequential(interpolateYlOrRd).domain(domainExtent),
+    () => scaleSequential((t: number) => interpolateOrRd(Math.pow(t, 0.4))).domain(domainExtent),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [domainExtent[0], domainExtent[1]],
   )

@@ -160,7 +160,6 @@ export function LineChart({
       </defs>
 
       <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-        {/* Y-axis gridlines and tick labels */}
         {yTicks.map(({ value, y, label }) => (
           <g key={value}>
             <line
@@ -185,7 +184,6 @@ export function LineChart({
           </g>
         ))}
 
-        {/* X-axis tick labels */}
         {xTicks.map(({ value, x, label }) => (
           <text
             key={value}
@@ -199,7 +197,6 @@ export function LineChart({
           </text>
         ))}
 
-        {/* Y-axis title */}
         <text
           x={-(innerHeight / 2)}
           y={-45}
@@ -208,10 +205,9 @@ export function LineChart({
           fill="#555"
           transform={`rotate(-90)`}
         >
-          Tonnes
+          Toneladas
         </text>
 
-        {/* X-axis title */}
         <text
           x={innerWidth / 2}
           y={innerHeight + 38}
@@ -219,10 +215,9 @@ export function LineChart({
           fontSize={12}
           fill="#555"
         >
-          Year
+          Año
         </text>
 
-        {/* Gradient area fill (below the main line) */}
         {areaD && (
           <path d={areaD} fill={`url(#${GRADIENT_ID})`} />
         )}
@@ -241,7 +236,6 @@ export function LineChart({
           />
         )}
 
-        {/* Annotation markers */}
         {annotations.map((ann) => {
           if (!xScale || !yScale) return null
           const point = data.find((d) => d.year === ann.year)
@@ -260,7 +254,6 @@ export function LineChart({
           )
         })}
 
-        {/* Source-switch label */}
         {sourceLabel && xScale && (
           <text
             x={xScale(2007)}
@@ -273,10 +266,8 @@ export function LineChart({
           </text>
         )}
 
-        {/* Tooltip overlay */}
         {tooltip && (
           <g data-testid="tooltip">
-            {/* Vertical crosshair */}
             <line
               x1={tooltip.x}
               x2={tooltip.x}
@@ -287,7 +278,6 @@ export function LineChart({
               strokeDasharray="4 2"
               strokeOpacity={0.7}
             />
-            {/* Marker dot */}
             <circle
               cx={tooltip.x}
               cy={tooltip.y}
@@ -296,7 +286,6 @@ export function LineChart({
               stroke="#fff"
               strokeWidth={2}
             />
-            {/* Year label */}
             <text
               x={tooltip.x + 8}
               y={tooltip.y - 12}
@@ -306,7 +295,6 @@ export function LineChart({
             >
               {tooltip.year}
             </text>
-            {/* Production label */}
             <text
               x={tooltip.x + 8}
               y={tooltip.y + 4}

@@ -15,11 +15,12 @@
  * Responsive CSS lives in Scrollytelling.css (media query for < 768 px stacks columns).
  */
 
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import type { RefObject } from 'react'
 import type { Feature, Geometry } from 'geojson'
 import { geoMercator, geoPath } from 'd3'
 import type { ExtendedFeatureCollection } from 'd3-geo'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { NationalSeries, DepartmentSeries, DepartmentGeoProperties, Chapter } from '../../../domain/coffee'
 import { useScrollStore } from '../store/scrollStore'
 import { useActiveChapter } from '../hooks/useActiveChapter'
@@ -47,15 +48,21 @@ export function Scrollytelling({
 }: ScrollytellingProps) {
   const activeChapterId = useScrollStore((s) => s.activeChapterId)
 
-  // Build a stable Map of sentinel refs (one per chapter).
-  // useMemo ensures the Map identity is stable across renders.
+  const [hasScrolled, setHasScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setHasScrolled(true)
+    window.addEventListener('scroll', onScroll, { once: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const sentinelRefs = useMemo(() => {
     const map = new Map<string, RefObject<HTMLElement | null>>()
     return map
   }, [])
 
-  // We use a ref of refs pattern: one stable Map, values are ref objects.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // useRef is the stable anchor — React guarantees its identity across renders.
+  // sentinelRefs provides the initial value; the cast below is needed because
+  // RefObject.current is readonly in strict mode and we assign through it in the ref callback.
   const refsContainer = useRef<Map<string, RefObject<HTMLElement | null>>>(sentinelRefs)
 
   // Ensure all chapters have refs in the container map.
@@ -112,6 +119,12 @@ export function Scrollytelling({
   }, [geoFeatures])
 
   return (
+    <>
+    <header className="scrollytelling-header">
+      <h1 className="scrollytelling-title">
+        Café Colombiano — Evolución de la Producción
+      </h1>
+    </header>
     <div
       data-testid="scrollytelling-grid"
       className="scrollytelling-grid"
@@ -143,7 +156,6 @@ export function Scrollytelling({
             ref={(el) => {
               const entry = refsContainer.current.get(chapter.id)
               if (entry) {
-                // Assign the DOM element to the ref object.
                 ;(entry as { current: HTMLElement | null }).current = el
               }
             }}
@@ -156,5 +168,24 @@ export function Scrollytelling({
         ))}
       </div>
     </div>
+
+    <AnimatePresence>
+      {!hasScrolled && (
+        <motion.div
+          className="scroll-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 8, 0] }}
+          exit={{ opacity: 0 }}
+          transition={{ opacity: { duration: 0.5 }, y: { repeat: Infinity, duration: 1.4, ease: 'easeInOut' } }}
+          aria-hidden="true"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          <span>Scroll</span>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   )
 }
