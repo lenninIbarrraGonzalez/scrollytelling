@@ -131,8 +131,12 @@ export function Scrollytelling({
     [activeChapter.seriesMode, weightedYieldSeries, nationalSeries],
   )
 
-  // Y-axis label: override to t/ha for the weighted-yield chapter.
+  // Y-axis label and tick format: override for the weighted-yield chapter.
+  // The default SI-prefix formatter shows "800m" for 0.8 — unusable for t/ha values.
   const yAxisLabel = activeChapter.seriesMode === 'weighted-yield' ? 't/ha' : undefined
+  const yTickFormat = activeChapter.seriesMode === 'weighted-yield'
+    ? (v: number) => v.toFixed(2)
+    : undefined
 
   // D3 scale math — computed here and passed down to keep viz components pure.
   const productionExtent = useMemo(() => {
@@ -190,6 +194,7 @@ export function Scrollytelling({
           slopeYearA={activeChapter.rankingYears?.[0] ?? 2007}
           slopeYearB={activeChapter.rankingYears?.[1] ?? 2024}
           yAxisLabel={yAxisLabel}
+          yTickFormat={yTickFormat}
         />
       </div>
 

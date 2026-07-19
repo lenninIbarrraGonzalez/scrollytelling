@@ -57,6 +57,8 @@ interface LineChartProps {
   sourceLabel?: string
   /** Y-axis label. Defaults to "Toneladas" when omitted. */
   yAxisLabel?: string
+  /** Y-axis tick formatter. Defaults to SI-prefix format (suitable for large production values). */
+  yTickFormat?: (value: number) => string
 }
 
 export function LineChart({
@@ -66,6 +68,7 @@ export function LineChart({
   annotations = [],
   sourceLabel,
   yAxisLabel,
+  yTickFormat,
 }: LineChartProps) {
   const innerWidth = width - MARGIN.left - MARGIN.right
   const innerHeight = height - MARGIN.top - MARGIN.bottom
@@ -98,17 +101,17 @@ export function LineChart({
       .y0(innerHeight)
       .y1((d) => ySc(d.production))
 
-    const fmt = d3Format('.2s')
+    const defaultFmt = d3Format('.2s')
 
     return {
       xScale: xSc,
       yScale: ySc,
       lineD: lineGenerator(data) ?? '',
       areaD: areaGenerator(data) ?? '',
-      yTicks: ySc.ticks(5).map((v) => ({ value: v, y: ySc(v), label: fmt(v) })),
+      yTicks: ySc.ticks(5).map((v) => ({ value: v, y: ySc(v), label: (yTickFormat ?? defaultFmt)(v) })),
       xTicks: xSc.ticks(6).map((v) => ({ value: v, x: xSc(v), label: String(Math.round(v)) })),
     }
-  }, [data, innerWidth, innerHeight])
+  }, [data, innerWidth, innerHeight, yTickFormat])
 
   // Draw-on animation: triggers once after first mount, never replays
   useEffect(() => {
