@@ -112,6 +112,17 @@ describe('buildScatterData', () => {
     expect(codes).toContain('17')
     expect(codes).not.toContain('05')
   })
+
+  it('deduplicates by daneCode keeping highest production (EVA dataset overlap)', () => {
+    const series: DepartmentProduction[] = [
+      makeDept('41', 'Huila', 2020, 100, 50, 2),
+      makeDept('41', 'Huila', 2020, 200, 80, 2.5), // same dept+year, higher production
+    ]
+    const result = buildScatterData(series, 2020)
+    expect(result).toHaveLength(1)
+    expect(result[0].production).toBe(200)
+    expect(result[0].areaHarvested).toBe(80)
+  })
 })
 
 // ---------------------------------------------------------------------------

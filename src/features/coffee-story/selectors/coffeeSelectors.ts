@@ -44,21 +44,31 @@ export function buildScatterData(
   series: DepartmentProduction[],
   year: number,
 ): ScatterDatum[] {
-  return series
-    .filter(
-      (row) =>
-        row.year === year &&
-        row.production > 0 &&
-        (row.areaHarvested ?? 0) > 0 &&
-        (row.yield ?? 0) > 0,
-    )
-    .map((row) => ({
-      daneCode: row.daneCode,
-      department: row.department,
-      production: row.production,
-      areaHarvested: row.areaHarvested as number,
-      yield: row.yield as number,
-    }))
+  const valid = series.filter(
+    (row) =>
+      row.year === year &&
+      row.production > 0 &&
+      (row.areaHarvested ?? 0) > 0 &&
+      (row.yield ?? 0) > 0,
+  )
+
+  // Deduplicate by daneCode — EVA datasets overlap at year boundaries.
+  // Keep the row with the highest production when duplicates exist.
+  const byCode = new Map<string, DepartmentProduction>()
+  for (const row of valid) {
+    const existing = byCode.get(row.daneCode)
+    if (!existing || row.production > existing.production) {
+      byCode.set(row.daneCode, row)
+    }
+  }
+
+  return Array.from(byCode.values()).map((row) => ({
+    daneCode: row.daneCode,
+    department: row.department,
+    production: row.production,
+    areaHarvested: row.areaHarvested as number,
+    yield: row.yield as number,
+  }))
 }
 
 // ---------------------------------------------------------------------------
@@ -150,8 +160,11 @@ export function buildSlopeData(
 
   for (const row of series) {
     deptName.set(row.daneCode, row.department)
-    if (row.year === yearA) prodA.set(row.daneCode, row.production)
-    if (row.year === yearB) prodB.set(row.daneCode, row.production)
+    // Keep the highest production when duplicate daneCode+year entries exist (dataset overlap).
+    if (row.year === yearA && row.production > (prodA.get(row.daneCode) ?? 0))
+      prodA.set(row.daneCode, row.production)
+    if (row.year === yearB && row.production > (prodB.get(row.daneCode) ?? 0))
+      prodB.set(row.daneCode, row.production)
   }
 
   // All unique department codes that appear in either year
