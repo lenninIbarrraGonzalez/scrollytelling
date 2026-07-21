@@ -126,8 +126,7 @@ export const chapters: Chapter[] = [
     id: 'chapter-8',
     index: 7,
     source: 'EVA',
-    viz: 'line',
-    seriesMode: 'weighted-yield',
+    viz: 'lollipop',
     title: 'La revolución silenciosa',
     body:
       'Menos tierra, más café. Desde 2008 el rendimiento nacional ha crecido sostenidamente: ' +

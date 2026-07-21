@@ -101,8 +101,8 @@ export function Scrollytelling({
     [departmentSeries, activeChapter.viz, activeChapter.dataYear],
   )
 
-  // Weighted yield series for chapter 8 — computed once over full departmentSeries.
-  const weightedYieldSeries = useMemo(
+  // Lollipop data for chapter 8 — weighted national yield computed once over full departmentSeries.
+  const lollipopData = useMemo(
     () => buildWeightedYieldSeries(departmentSeries),
     [departmentSeries],
   )
@@ -120,23 +120,6 @@ export function Scrollytelling({
         : [],
     [departmentSeries, activeChapter.viz, activeChapter.rankingYears],
   )
-
-  // For chapter 8 (seriesMode = weighted-yield), substitute the national line data
-  // with weighted yield values mapped to the same NationalSeries shape.
-  const lineData = useMemo(
-    () =>
-      activeChapter.seriesMode === 'weighted-yield'
-        ? weightedYieldSeries.map((d) => ({ year: d.year, production: d.yield }))
-        : nationalSeries,
-    [activeChapter.seriesMode, weightedYieldSeries, nationalSeries],
-  )
-
-  // Y-axis label and tick format: override for the weighted-yield chapter.
-  // The default SI-prefix formatter shows "800m" for 0.8 — unusable for t/ha values.
-  const yAxisLabel = activeChapter.seriesMode === 'weighted-yield' ? 't/ha' : undefined
-  const yTickFormat = activeChapter.seriesMode === 'weighted-yield'
-    ? (v: number) => v.toFixed(2)
-    : undefined
 
   // D3 scale math — computed here and passed down to keep viz components pure.
   const productionExtent = useMemo(() => {
@@ -178,7 +161,7 @@ export function Scrollytelling({
     >
       <div className="scrollytelling-viz-column">
         <StickyVisualization
-          nationalSeries={lineData}
+          nationalSeries={nationalSeries}
           departmentSeries={chapterDepartmentSeries}
           geoFeatures={geoFeatures as { features: Feature<Geometry, DepartmentGeoProperties>[] }}
           colorScale={colorScale}
@@ -193,8 +176,7 @@ export function Scrollytelling({
           slopeData={slopeData}
           slopeYearA={activeChapter.rankingYears?.[0] ?? 2007}
           slopeYearB={activeChapter.rankingYears?.[1] ?? 2024}
-          yAxisLabel={yAxisLabel}
-          yTickFormat={yTickFormat}
+          lollipopData={lollipopData}
         />
       </div>
 

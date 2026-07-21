@@ -14,11 +14,12 @@
 
 import type { GeoPath } from 'd3'
 import type { Feature, Geometry } from 'geojson'
-import type { Viz, NationalSeries, DepartmentSeries, DepartmentGeoProperties, ScatterDatum, SlopeDatum } from '../../../domain/coffee'
+import type { Viz, NationalSeries, DepartmentSeries, DepartmentGeoProperties, ScatterDatum, SlopeDatum, YieldDatum } from '../../../domain/coffee'
 import { LineChart } from './LineChart'
 import { ChoroplethMap } from './ChoroplethMap'
 import { ScatterBubbleChart } from './ScatterBubbleChart'
 import { SlopeChart } from './SlopeChart'
+import { LollipopChart } from './LollipopChart'
 
 interface StickyVisualizationProps {
   nationalSeries: NationalSeries
@@ -46,10 +47,8 @@ interface StickyVisualizationProps {
   slopeYearA?: number
   /** Year labels for slope chart. */
   slopeYearB?: number
-  /** Y-axis label for LineChart. Defaults to "Toneladas" when omitted. */
-  yAxisLabel?: string
-  /** Y-axis tick formatter for LineChart. Defaults to SI-prefix format when omitted. */
-  yTickFormat?: (value: number) => string
+  /** Lollipop data for chapter 8 LollipopChart. */
+  lollipopData?: YieldDatum[]
 }
 
 /**
@@ -92,8 +91,7 @@ export function StickyVisualization({
   slopeData = [],
   slopeYearA = 2007,
   slopeYearB = 2024,
-  yAxisLabel,
-  yTickFormat,
+  lollipopData = [],
 }: StickyVisualizationProps) {
   const productionByDane = buildProductionByDane(departmentSeries)
 
@@ -109,8 +107,6 @@ export function StickyVisualization({
           height={height}
           annotations={annotations}
           sourceLabel={sourceLabel}
-          yAxisLabel={yAxisLabel}
-          yTickFormat={yTickFormat}
         />
       ) : activeViz === 'choropleth' ? (
         <ChoroplethMap
@@ -138,6 +134,12 @@ export function StickyVisualization({
           yearA={slopeYearA}
           yearB={slopeYearB}
           highlightDaneCodes={highlightDaneCodes}
+        />
+      ) : activeViz === 'lollipop' ? (
+        <LollipopChart
+          data={lollipopData}
+          width={width}
+          height={height}
         />
       ) : null}
     </div>

@@ -30,7 +30,7 @@ export interface DepartmentProduction {
 export type ChapterSource = 'FAO' | 'EVA'
 
 /** Visualization types available in the scrollytelling. */
-export type Viz = 'line' | 'choropleth' | 'scatter' | 'slope'
+export type Viz = 'line' | 'choropleth' | 'scatter' | 'slope' | 'lollipop'
 
 /**
  * A scatter plot datum: one department's production, area, and yield for a given year.
@@ -60,7 +60,7 @@ export interface SlopeDatum {
 /**
  * A national weighted yield datum for a single year.
  * yield = Σproduction / ΣareaHarvested (rows with areaHarvested > 0 only).
- * Used by LineChart in chapter 8 (seriesMode: 'weighted-yield').
+ * Used by LollipopChart in chapter 8.
  */
 export interface YieldDatum {
   year: number
@@ -102,12 +102,6 @@ export interface Chapter {
    * e.g. [2007, 2024]
    */
   rankingYears?: [number, number]
-  /**
-   * Controls what the line chart shows.
-   * 'production' (default) — national or departmental tonnes.
-   * 'weighted-yield' — national weighted yield series (chapter 8).
-   */
-  seriesMode?: 'production' | 'weighted-yield'
 }
 
 /** Full national production time series. */

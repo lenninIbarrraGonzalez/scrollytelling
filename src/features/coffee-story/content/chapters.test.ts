@@ -22,7 +22,7 @@ describe('chapters content', () => {
       expect(typed.id).toBeTruthy()
       expect(typed.index).toBeTypeOf('number')
       expect(['FAO', 'EVA']).toContain(typed.source)
-      expect(['line', 'choropleth', 'scatter', 'slope']).toContain(typed.viz)
+      expect(['line', 'choropleth', 'scatter', 'slope', 'lollipop']).toContain(typed.viz)
       expect(typed.title).toBeTruthy()
       expect(typed.body).toBeTruthy()
     }
@@ -118,12 +118,8 @@ describe('chapters content', () => {
   })
 
   // PR3 — chapter 8 (index 7)
-  it('chapters[7].viz is line', () => {
-    expect(chapters[7].viz).toBe('line')
-  })
-
-  it('chapters[7].seriesMode is weighted-yield', () => {
-    expect(chapters[7].seriesMode).toBe('weighted-yield')
+  it('chapters[7].viz is lollipop', () => {
+    expect(chapters[7].viz).toBe('lollipop')
   })
 
   it('chapters[7].source is EVA', () => {
