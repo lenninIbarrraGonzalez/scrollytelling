@@ -29,6 +29,46 @@ export interface DepartmentProduction {
  */
 export type ChapterSource = 'FAO' | 'EVA'
 
+/** Visualization types available in the scrollytelling. */
+export type Viz = 'line' | 'choropleth' | 'scatter' | 'slope' | 'lollipop'
+
+/**
+ * A scatter plot datum: one department's production, area, and yield for a given year.
+ * Used by ScatterBubbleChart (chapter 6).
+ */
+export interface ScatterDatum {
+  daneCode: string
+  department: string
+  production: number
+  areaHarvested: number
+  yield: number
+}
+
+/**
+ * A slope chart datum: one department's rank in two comparison years.
+ * Used by SlopeChart (chapter 7).
+ */
+export interface SlopeDatum {
+  daneCode: string
+  department: string
+  rankA: number
+  rankB: number
+  productionA: number
+  productionB: number
+}
+
+/**
+ * A national weighted yield datum for a single year.
+ * yield = Σproduction / ΣareaHarvested (rows with areaHarvested > 0 only).
+ * Used by LollipopChart in chapter 8.
+ */
+export interface YieldDatum {
+  year: number
+  production: number
+  areaHarvested: number
+  yield: number
+}
+
 /** A single scrollytelling narrative chapter. */
 export interface Chapter {
   /** Stable unique identifier — required (missing id is a TS compile error). */
@@ -38,7 +78,7 @@ export interface Chapter {
   /** Which data provenance this chapter uses. */
   source: ChapterSource
   /** Which visualization type to render for this chapter. */
-  viz: 'line' | 'choropleth'
+  viz: Viz
   /** Short chapter headline. */
   title: string
   /** Narrative body text (no JSX — plain string). */
@@ -57,6 +97,11 @@ export interface Chapter {
    * matches its narrative, not just the most recent available data.
    */
   dataYear?: number
+  /**
+   * Two comparison years for the slope chart (chapter 7).
+   * e.g. [2007, 2024]
+   */
+  rankingYears?: [number, number]
 }
 
 /** Full national production time series. */

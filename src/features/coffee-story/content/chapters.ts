@@ -95,4 +95,43 @@ export const chapters: Chapter[] = [
     dataYear: 2023,
     annotations: [{ year: 2021, label: 'La Niña: ~560.000 t' }],
   },
+  {
+    id: 'chapter-6',
+    index: 5,
+    source: 'EVA',
+    viz: 'scatter',
+    dataYear: 2023,
+    title: 'Volumen no es eficiencia',
+    body:
+      'Producir mucho no es lo mismo que producir bien. Cada burbuja es un departamento: ' +
+      'su posición horizontal muestra cuánta tierra usa, la vertical qué tan eficiente es, ' +
+      'y su tamaño cuánto café produce. Los pequeños que están arriba a la izquierda son ' +
+      'los campeones silenciosos.',
+    highlightDaneCodes: PROTAGONIST_CODES,
+  },
+  {
+    id: 'chapter-7',
+    index: 6,
+    source: 'EVA',
+    viz: 'slope',
+    rankingYears: [2007, 2024],
+    title: 'El giro regional',
+    body:
+      'Entre 2007 y 2024 el mapa del poder cafetero cambió. Huila trepó desde el cuarto ' +
+      'puesto hasta el primero. El Eje Cafetero histórico cedió terreno relativo. Las líneas ' +
+      'muestran el desplazamiento de cada departamento.',
+    highlightDaneCodes: PROTAGONIST_CODES,
+  },
+  {
+    id: 'chapter-8',
+    index: 7,
+    source: 'EVA',
+    viz: 'lollipop',
+    title: 'La revolución silenciosa',
+    body:
+      'Menos tierra, más café. Desde 2008 el rendimiento nacional ha crecido sostenidamente: ' +
+      'la variedad Castillo, más resistente a la roya y al clima, transformó la productividad ' +
+      'colombiana sin que el área sembrada creciera en la misma proporción.',
+    highlightDaneCodes: PROTAGONIST_CODES,
+  },
 ]

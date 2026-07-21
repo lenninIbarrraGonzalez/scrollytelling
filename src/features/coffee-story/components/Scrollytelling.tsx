@@ -27,6 +27,7 @@ import { useActiveChapter } from '../hooks/useActiveChapter'
 import { useD3Scales } from '../visualizations/useD3Scales'
 import { StickyVisualization } from '../visualizations/StickyVisualization'
 import { ChapterText } from './ChapterText'
+import { buildScatterData, buildSlopeData, buildWeightedYieldSeries, SLOPE_TOP_N } from '../selectors/coffeeSelectors'
 import './Scrollytelling.css'
 
 // Default SVG dimensions — consistent across all chapters.
@@ -91,6 +92,35 @@ export function Scrollytelling({
     return departmentSeries.filter((d) => d.year === year)
   }, [activeChapter, departmentSeries])
 
+  // Scatter data for chapter 6 (ScatterBubbleChart).
+  const scatterData = useMemo(
+    () =>
+      activeChapter.viz === 'scatter' && activeChapter.dataYear
+        ? buildScatterData(departmentSeries, activeChapter.dataYear)
+        : [],
+    [departmentSeries, activeChapter.viz, activeChapter.dataYear],
+  )
+
+  // Lollipop data for chapter 8 — weighted national yield computed once over full departmentSeries.
+  const lollipopData = useMemo(
+    () => buildWeightedYieldSeries(departmentSeries),
+    [departmentSeries],
+  )
+
+  // Slope data for chapter 7 (SlopeChart).
+  const slopeData = useMemo(
+    () =>
+      activeChapter.viz === 'slope' && activeChapter.rankingYears
+        ? buildSlopeData(
+            departmentSeries,
+            activeChapter.rankingYears[0],
+            activeChapter.rankingYears[1],
+            SLOPE_TOP_N,
+          )
+        : [],
+    [departmentSeries, activeChapter.viz, activeChapter.rankingYears],
+  )
+
   // D3 scale math — computed here and passed down to keep viz components pure.
   const productionExtent = useMemo(() => {
     const allValues = [
@@ -129,7 +159,6 @@ export function Scrollytelling({
       data-testid="scrollytelling-grid"
       className="scrollytelling-grid"
     >
-      {/* Left column — sticky visualization */}
       <div className="scrollytelling-viz-column">
         <StickyVisualization
           nationalSeries={nationalSeries}
@@ -143,10 +172,14 @@ export function Scrollytelling({
           highlightDaneCodes={highlightDaneCodes}
           annotations={annotations}
           domainExtent={productionExtent}
+          scatterData={scatterData}
+          slopeData={slopeData}
+          slopeYearA={activeChapter.rankingYears?.[0] ?? 2007}
+          slopeYearB={activeChapter.rankingYears?.[1] ?? 2024}
+          lollipopData={lollipopData}
         />
       </div>
 
-      {/* Right column — scrolling chapter text */}
       <div className="scrollytelling-text-column">
         {chapters.map((chapter) => (
           <div

@@ -12,8 +12,8 @@ import type { Chapter } from '../../../domain/coffee'
 import { chapters } from './chapters'
 
 describe('chapters content', () => {
-  it('exports exactly 5 chapters', () => {
-    expect(chapters).toHaveLength(5)
+  it('exports exactly 8 chapters', () => {
+    expect(chapters).toHaveLength(8)
   })
 
   it('each element satisfies the Chapter type shape', () => {
@@ -22,15 +22,15 @@ describe('chapters content', () => {
       expect(typed.id).toBeTruthy()
       expect(typed.index).toBeTypeOf('number')
       expect(['FAO', 'EVA']).toContain(typed.source)
-      expect(['line', 'choropleth']).toContain(typed.viz)
+      expect(['line', 'choropleth', 'scatter', 'slope', 'lollipop']).toContain(typed.viz)
       expect(typed.title).toBeTruthy()
       expect(typed.body).toBeTruthy()
     }
   })
 
-  it('chapter indexes are 0–4 in order', () => {
+  it('chapter indexes are 0–7 in order', () => {
     const indexes = chapters.map((ch) => ch.index)
-    expect(indexes).toEqual([0, 1, 2, 3, 4])
+    expect(indexes).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
   })
 
   it('chapters[0].source is FAO (national series, 1990s auge)', () => {
@@ -82,6 +82,54 @@ describe('chapters content', () => {
       for (const code of protagonistCodes) {
         expect(ch.highlightDaneCodes).toContain(code)
       }
+    }
+  })
+
+  // PR2 — chapters 6 and 7 (indexes 5 and 6)
+  it('chapters[5].viz is scatter', () => {
+    expect(chapters[5].viz).toBe('scatter')
+  })
+
+  it('chapters[5].source is EVA', () => {
+    expect(chapters[5].source).toBe('EVA')
+  })
+
+  it('chapters[5].highlightDaneCodes includes "41" (Huila)', () => {
+    expect(chapters[5].highlightDaneCodes).toContain('41')
+  })
+
+  it('chapters[6].viz is slope', () => {
+    expect(chapters[6].viz).toBe('slope')
+  })
+
+  it('chapters[6].source is EVA', () => {
+    expect(chapters[6].source).toBe('EVA')
+  })
+
+  it('chapters[6].rankingYears is [2007, 2024]', () => {
+    expect(chapters[6].rankingYears).toEqual([2007, 2024])
+  })
+
+  it('chapters[6].highlightDaneCodes includes all protagonist codes', () => {
+    const protagonistCodes = ['41', '17', '63', '66', '05', '73']
+    for (const code of protagonistCodes) {
+      expect(chapters[6].highlightDaneCodes).toContain(code)
+    }
+  })
+
+  // PR3 — chapter 8 (index 7)
+  it('chapters[7].viz is lollipop', () => {
+    expect(chapters[7].viz).toBe('lollipop')
+  })
+
+  it('chapters[7].source is EVA', () => {
+    expect(chapters[7].source).toBe('EVA')
+  })
+
+  it('chapters[7].highlightDaneCodes includes all protagonist codes', () => {
+    const protagonistCodes = ['05', '17', '41', '63', '66', '73']
+    for (const code of protagonistCodes) {
+      expect(chapters[7].highlightDaneCodes).toContain(code)
     }
   })
 })
