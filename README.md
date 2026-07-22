@@ -4,6 +4,19 @@ An editorial data visualization built in the style of NYT Snow Fall. Eight chapt
 
 Live demo · [Portfolio piece — Frontend Senior]
 
+<table>
+  <tr>
+    <td><img src="readme_img/captura1.png" alt="Chapter 1" width="100%"/></td>
+    <td><img src="readme_img/caputura2.png" alt="Chapter 2" width="100%"/></td>
+    <td><img src="readme_img/captura3.png" alt="Chapter 3" width="100%"/></td>
+  </tr>
+  <tr>
+    <td><img src="readme_img/captura4.png" alt="Chapter 4" width="100%"/></td>
+    <td><img src="readme_img/captura5.png" alt="Chapter 5" width="100%"/></td>
+    <td></td>
+  </tr>
+</table>
+
 ---
 
 ## What it covers
