@@ -39,6 +39,9 @@ interface StickyVisualizationProps {
   sourceLabel?: string
   /** Production domain extent [min, max] for the choropleth color legend. */
   domainExtent?: [number, number]
+  /** Override width/height for the choropleth map only. */
+  mapWidth?: number
+  mapHeight?: number
   /** Scatter data for chapter 6 ScatterBubbleChart. */
   scatterData?: ScatterDatum[]
   /** Slope data for chapter 7 SlopeChart. */
@@ -87,6 +90,8 @@ export function StickyVisualization({
   annotations = [],
   sourceLabel,
   domainExtent,
+  mapWidth,
+  mapHeight,
   scatterData = [],
   slopeData = [],
   slopeYearA = 2007,
@@ -115,8 +120,8 @@ export function StickyVisualization({
           colorScale={colorScale}
           highlightDaneCodes={highlightDaneCodes}
           geoPath={geoPath}
-          width={width}
-          height={height}
+          width={mapWidth ?? width}
+          height={mapHeight ?? height}
           domainExtent={domainExtent}
         />
       ) : activeViz === 'scatter' ? (

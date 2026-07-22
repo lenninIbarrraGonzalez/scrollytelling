@@ -111,7 +111,7 @@ export function ScatterBubbleChart({
               y={y}
               textAnchor="end"
               dominantBaseline="middle"
-              fontSize={11}
+              fontSize={14}
               fill="#666"
             >
               {label}
@@ -125,7 +125,7 @@ export function ScatterBubbleChart({
             x={x}
             y={innerHeight + 20}
             textAnchor="middle"
-            fontSize={11}
+            fontSize={14}
             fill="#666"
           >
             {label}
@@ -136,7 +136,7 @@ export function ScatterBubbleChart({
           x={innerWidth / 2}
           y={innerHeight + 44}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={15}
           fill="#555"
         >
           Área cosechada (ha)
@@ -146,7 +146,7 @@ export function ScatterBubbleChart({
           x={-(innerHeight / 2)}
           y={-48}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={15}
           fill="#555"
           transform="rotate(-90)"
         >
@@ -192,25 +192,25 @@ export function ScatterBubbleChart({
           >
             <rect
               x={-4}
-              y={-14}
-              width={160}
-              height={70}
+              y={-18}
+              width={185}
+              height={90}
               rx={4}
               fill="white"
               stroke="#ccc"
               strokeWidth={1}
               opacity={0.95}
             />
-            <text fontSize={12} fontWeight="bold" fill="#333" y={0}>
+            <text fontSize={15} fontWeight="bold" fill="#333" y={0}>
               {tooltip.datum.department}
             </text>
-            <text fontSize={11} fill="#555" y={16}>
+            <text fontSize={14} fill="#555" y={20}>
               {fmtNum(tooltip.datum.production)} t
             </text>
-            <text fontSize={11} fill="#555" y={30}>
+            <text fontSize={14} fill="#555" y={38}>
               {fmtNum(tooltip.datum.areaHarvested)} ha
             </text>
-            <text fontSize={11} fill="#555" y={44}>
+            <text fontSize={14} fill="#555" y={56}>
               {tooltip.datum.yield.toFixed(2)} t/ha
             </text>
           </g>

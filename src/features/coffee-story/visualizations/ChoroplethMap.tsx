@@ -94,6 +94,7 @@ export function ChoroplethMap({
       ref={svgRef}
       width={width}
       height={height}
+      style={{ maxWidth: '100%', display: 'block' }}
       role="img"
       aria-label="Colombian coffee production choropleth map"
       onTouchStart={() => setHasInteracted(true)}
@@ -113,7 +114,7 @@ export function ChoroplethMap({
             key={daneCode}
             data-dane-code={daneCode}
             d={pathD}
-            fill={colorScale(production)}
+            fill={isHovered ? '#d4a96b' : colorScale(production)}
             stroke={isHovered ? '#333' : '#fff'}
             strokeWidth={isHovered ? 2.5 : isProtagonist ? 2 : 0.5}
             style={{ transition: 'fill 300ms ease' }}
@@ -141,21 +142,21 @@ export function ChoroplethMap({
       {tip && (
         <g
           data-testid="choropleth-tooltip"
-          transform={`translate(${tip.x + 8}, ${tip.y - 8})`}
+          transform={`translate(${Math.min(Math.max(tip.x + 8, 0), width - 185)}, ${Math.min(Math.max(tip.y - 8, 18), height - 28)})`}
         >
           <rect
             x={0}
-            y={-16}
-            width={140}
-            height={36}
+            y={-18}
+            width={185}
+            height={46}
             fill="white"
             fillOpacity={0.9}
             rx={3}
           />
-          <text x={6} y={0} fontSize={12} fontWeight="bold">
+          <text x={8} y={0} fontSize={15} fontWeight="bold">
             {tip.name}
           </text>
-          <text x={6} y={14} fontSize={11} fill="#555">
+          <text x={8} y={18} fontSize={14} fill="#555">
             {tip.production.toLocaleString('en-US')} toneladas
           </text>
         </g>

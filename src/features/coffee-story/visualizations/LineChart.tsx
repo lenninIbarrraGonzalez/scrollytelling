@@ -176,7 +176,7 @@ export function LineChart({
               y={y}
               textAnchor="end"
               dominantBaseline="middle"
-              fontSize={11}
+              fontSize={14}
               fill="#666"
             >
               {label}
@@ -190,7 +190,7 @@ export function LineChart({
             x={x}
             y={innerHeight + 20}
             textAnchor="middle"
-            fontSize={11}
+            fontSize={14}
             fill="#666"
           >
             {label}
@@ -201,7 +201,7 @@ export function LineChart({
           x={-(innerHeight / 2)}
           y={-45}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={15}
           fill="#555"
           transform={`rotate(-90)`}
         >
@@ -212,7 +212,7 @@ export function LineChart({
           x={innerWidth / 2}
           y={innerHeight + 38}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={15}
           fill="#555"
         >
           Año
@@ -247,7 +247,7 @@ export function LineChart({
           return (
             <g key={ann.year} role="img" aria-label={ann.label}>
               <circle cx={x} cy={y} r={5} fill="#c0392b" />
-              <text x={x + 8} y={y - 8} fontSize={11} fill="#c0392b">
+              <text x={x + 8} y={y - 8} fontSize={13} fill="#c0392b">
                 {ann.label}
               </text>
             </g>
@@ -289,7 +289,7 @@ export function LineChart({
             <text
               x={tooltip.x + 8}
               y={tooltip.y - 12}
-              fontSize={12}
+              fontSize={15}
               fill="#333"
               fontWeight="bold"
             >
@@ -297,8 +297,8 @@ export function LineChart({
             </text>
             <text
               x={tooltip.x + 8}
-              y={tooltip.y + 4}
-              fontSize={11}
+              y={tooltip.y + 8}
+              fontSize={14}
               fill="#555"
             >
               {tooltip.production.toLocaleString()}

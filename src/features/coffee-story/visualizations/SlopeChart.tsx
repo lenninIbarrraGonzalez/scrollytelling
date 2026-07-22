@@ -79,7 +79,7 @@ export function SlopeChart({
         x={leftX}
         y={MARGIN.top - 16}
         textAnchor="middle"
-        fontSize={13}
+        fontSize={16}
         fontWeight={600}
         fill="#333"
       >
@@ -89,7 +89,7 @@ export function SlopeChart({
         x={rightX}
         y={MARGIN.top - 16}
         textAnchor="middle"
-        fontSize={13}
+        fontSize={16}
         fontWeight={600}
         fill="#333"
       >
@@ -143,7 +143,7 @@ export function SlopeChart({
               y={yA}
               textAnchor="end"
               dominantBaseline="middle"
-              fontSize={11}
+              fontSize={14}
               fontWeight={fontWeight}
               fill={isProtagonist ? PROTAGONIST_STROKE : '#555'}
             >
@@ -155,7 +155,7 @@ export function SlopeChart({
               y={yB}
               textAnchor="start"
               dominantBaseline="middle"
-              fontSize={11}
+              fontSize={14}
               fontWeight={fontWeight}
               fill={isProtagonist ? PROTAGONIST_STROKE : '#555'}
             >

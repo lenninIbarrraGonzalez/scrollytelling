@@ -9,7 +9,7 @@
 }
 
 .scrollytelling-title {
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #2c1810;
   margin: 0;
@@ -61,6 +61,21 @@
   display: flex;
   align-items: center;
   padding: 2rem 0;
+}
+
+.scrollytelling-chapter-section h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2c1810;
+  margin: 0 0 1rem;
+  line-height: 1.25;
+}
+
+.scrollytelling-chapter-section p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #3a2a1a;
+  margin: 0;
 }
 
 /* Responsive: stack columns vertically on narrow viewports */

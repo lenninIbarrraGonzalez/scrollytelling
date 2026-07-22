@@ -77,7 +77,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
               y={y}
               textAnchor="end"
               dominantBaseline="middle"
-              fontSize={11}
+              fontSize={14}
               fill="#666"
             >
               {label}
@@ -91,7 +91,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
             x={x}
             y={innerHeight + 20}
             textAnchor="middle"
-            fontSize={11}
+            fontSize={14}
             fill="#666"
           >
             {label}
@@ -102,7 +102,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
           x={-(innerHeight / 2)}
           y={-42}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={15}
           fill="#555"
           transform="rotate(-90)"
         >
@@ -113,7 +113,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
           x={innerWidth / 2}
           y={innerHeight + 42}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={15}
           fill="#555"
         >
           Año
@@ -159,29 +159,29 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
           <g data-testid="lollipop-tooltip">
             <rect
               x={tooltip.x + 8}
-              y={tooltip.y - 32}
-              width={72}
-              height={36}
+              y={tooltip.y - 42}
+              width={110}
+              height={46}
               rx={4}
               fill="#fff"
               stroke="#ddd"
               strokeWidth={1}
             />
             <text
-              x={tooltip.x + 44}
-              y={tooltip.y - 18}
+              x={tooltip.x + 63}
+              y={tooltip.y - 26}
               textAnchor="middle"
-              fontSize={12}
+              fontSize={15}
               fill="#333"
               fontWeight="bold"
             >
               {tooltip.year}
             </text>
             <text
-              x={tooltip.x + 44}
-              y={tooltip.y - 4}
+              x={tooltip.x + 63}
+              y={tooltip.y - 8}
               textAnchor="middle"
-              fontSize={11}
+              fontSize={14}
               fill="#555"
             >
               {tooltip.yield.toFixed(2)} t/ha

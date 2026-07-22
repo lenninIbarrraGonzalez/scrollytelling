@@ -33,6 +33,9 @@ import './Scrollytelling.css'
 // Default SVG dimensions — consistent across all chapters.
 const VIZ_WIDTH = 600
 const VIZ_HEIGHT = 500
+// Choropleth map gets more vertical space to show Colombia's elongated shape.
+const MAP_WIDTH = 640
+const MAP_HEIGHT = 560
 
 interface ScrollytellingProps {
   chapters: Chapter[]
@@ -142,7 +145,7 @@ export function Scrollytelling({
     // d3-geo's fitSize expects ExtendedFeatureCollection (with optional bbox/crs).
     // Our domain type is a plain FeatureCollection — structurally compatible at runtime.
     const projection = geoMercator().fitSize(
-      [VIZ_WIDTH, VIZ_HEIGHT],
+      [MAP_WIDTH, MAP_HEIGHT],
       geoFeatures as unknown as ExtendedFeatureCollection,
     )
     return geoPath(projection)
@@ -168,6 +171,8 @@ export function Scrollytelling({
           geoPath={geoPathGenerator}
           width={VIZ_WIDTH}
           height={VIZ_HEIGHT}
+          mapWidth={MAP_WIDTH}
+          mapHeight={MAP_HEIGHT}
           activeViz={activeViz}
           highlightDaneCodes={highlightDaneCodes}
           annotations={annotations}
