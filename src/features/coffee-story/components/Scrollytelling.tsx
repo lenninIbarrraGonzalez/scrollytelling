@@ -64,20 +64,27 @@ export function Scrollytelling({
 
   const vizColumnRef = useRef<HTMLDivElement>(null)
   const [vizColumnWidth, setVizColumnWidth] = useState(0)
+  const [vizColumnHeight, setVizColumnHeight] = useState(0)
   useEffect(() => {
     const el = vizColumnRef.current
     if (!el || typeof ResizeObserver === 'undefined') return
     const ro = new ResizeObserver(([entry]) => {
       setVizColumnWidth(entry.contentRect.width)
+      setVizColumnHeight(entry.contentRect.height)
     })
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
 
+  const LEGEND_HEIGHT = 54 // 48px legend SVG + 6px margin-top
   const vizWidth  = vizColumnWidth > 0 ? Math.min(vizColumnWidth - SIDE_PADDING, 600) : 600
   const vizHeight = Math.round(vizWidth * (5 / 6))
   const mapWidth  = vizColumnWidth > 0 ? Math.min(vizColumnWidth - SIDE_PADDING, 640) : 640
-  const mapHeight = Math.round(mapWidth * (7 / 8))
+  const mapHeight = (() => {
+    const byAspect = Math.round(mapWidth * (7 / 8))
+    if (vizColumnHeight <= 0) return byAspect
+    return Math.min(byAspect, vizColumnHeight - LEGEND_HEIGHT)
+  })()
 
   const sentinelRefs = useMemo(() => {
     const map = new Map<string, RefObject<HTMLElement | null>>()
