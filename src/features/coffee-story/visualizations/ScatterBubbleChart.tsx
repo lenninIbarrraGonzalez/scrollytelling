@@ -185,36 +185,41 @@ export function ScatterBubbleChart({
           )
         })}
 
-        {tooltip && (
-          <g
-            data-testid="scatter-tooltip"
-            transform={`translate(${tooltip.x + 12},${tooltip.y - 10})`}
-          >
-            <rect
-              x={-4}
-              y={-18}
-              width={185}
-              height={90}
-              rx={4}
-              fill="#E6E0D6"
-              stroke="#cdc9be"
-              strokeWidth={1}
-              opacity={0.95}
-            />
-            <text fontSize={15} fontWeight="bold" fill="#1C2430" y={0}>
-              {tooltip.datum.department}
-            </text>
-            <text fontSize={14} fill="#6B6F4E" y={20}>
-              {fmtNum(tooltip.datum.production)} t
-            </text>
-            <text fontSize={14} fill="#6B6F4E" y={38}>
-              {fmtNum(tooltip.datum.areaHarvested)} ha
-            </text>
-            <text fontSize={14} fill="#6B6F4E" y={56}>
-              {tooltip.datum.yield.toFixed(2)} t/ha
-            </text>
-          </g>
-        )}
+        {tooltip && (() => {
+          const CARD_W = 185
+          const flipLeft = tooltip.x + 12 + CARD_W > innerWidth
+          const tx = flipLeft ? tooltip.x - 12 - CARD_W : tooltip.x + 12
+          return (
+            <g
+              data-testid="scatter-tooltip"
+              transform={`translate(${tx},${tooltip.y - 10})`}
+            >
+              <rect
+                x={-4}
+                y={-18}
+                width={CARD_W}
+                height={90}
+                rx={4}
+                fill="#E6E0D6"
+                stroke="#cdc9be"
+                strokeWidth={1}
+                opacity={0.95}
+              />
+              <text fontSize={15} fontWeight="bold" fill="#1C2430" y={0}>
+                {tooltip.datum.department}
+              </text>
+              <text fontSize={14} fill="#6B6F4E" y={20}>
+                {fmtNum(tooltip.datum.production)} t
+              </text>
+              <text fontSize={14} fill="#6B6F4E" y={38}>
+                {fmtNum(tooltip.datum.areaHarvested)} ha
+              </text>
+              <text fontSize={14} fill="#6B6F4E" y={56}>
+                {tooltip.datum.yield.toFixed(2)} t/ha
+              </text>
+            </g>
+          )
+        })()}
       </g>
     </svg>
   )

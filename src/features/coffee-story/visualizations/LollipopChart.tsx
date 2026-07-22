@@ -155,39 +155,45 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
           )
         })}
 
-        {tooltip && (
-          <g data-testid="lollipop-tooltip">
-            <rect
-              x={tooltip.x + 8}
-              y={tooltip.y - 42}
-              width={110}
-              height={46}
-              rx={4}
-              fill="#E6E0D6"
-              stroke="#cdc9be"
-              strokeWidth={1}
-            />
-            <text
-              x={tooltip.x + 63}
-              y={tooltip.y - 26}
-              textAnchor="middle"
-              fontSize={15}
-              fill="#1C2430"
-              fontWeight="bold"
-            >
-              {tooltip.year}
-            </text>
-            <text
-              x={tooltip.x + 63}
-              y={tooltip.y - 8}
-              textAnchor="middle"
-              fontSize={14}
-              fill="#6B6F4E"
-            >
-              {tooltip.yield.toFixed(2)} t/ha
-            </text>
-          </g>
-        )}
+        {tooltip && (() => {
+          const CARD_W = 110
+          const flipLeft = tooltip.x + 8 + CARD_W > innerWidth
+          const rectX = flipLeft ? tooltip.x - 8 - CARD_W : tooltip.x + 8
+          const textX = rectX + CARD_W / 2
+          return (
+            <g data-testid="lollipop-tooltip">
+              <rect
+                x={rectX}
+                y={tooltip.y - 42}
+                width={CARD_W}
+                height={46}
+                rx={4}
+                fill="#E6E0D6"
+                stroke="#cdc9be"
+                strokeWidth={1}
+              />
+              <text
+                x={textX}
+                y={tooltip.y - 26}
+                textAnchor="middle"
+                fontSize={15}
+                fill="#1C2430"
+                fontWeight="bold"
+              >
+                {tooltip.year}
+              </text>
+              <text
+                x={textX}
+                y={tooltip.y - 8}
+                textAnchor="middle"
+                fontSize={14}
+                fill="#6B6F4E"
+              >
+                {tooltip.yield.toFixed(2)} t/ha
+              </text>
+            </g>
+          )
+        })()}
       </g>
     </svg>
   )

@@ -266,45 +266,52 @@ export function LineChart({
           </text>
         )}
 
-        {tooltip && (
-          <g data-testid="tooltip">
-            <line
-              x1={tooltip.x}
-              x2={tooltip.x}
-              y1={0}
-              y2={innerHeight}
-              stroke="#8A5A2B"
-              strokeWidth={1}
-              strokeDasharray="4 2"
-              strokeOpacity={0.7}
-            />
-            <circle
-              cx={tooltip.x}
-              cy={tooltip.y}
-              r={5}
-              fill="#8A5A2B"
-              stroke="#fff"
-              strokeWidth={2}
-            />
-            <text
-              x={tooltip.x + 8}
-              y={tooltip.y - 12}
-              fontSize={15}
-              fill="#1C2430"
-              fontWeight="bold"
-            >
-              {tooltip.year}
-            </text>
-            <text
-              x={tooltip.x + 8}
-              y={tooltip.y + 8}
-              fontSize={14}
-              fill="#6B6F4E"
-            >
-              {tooltip.production.toLocaleString()}
-            </text>
-          </g>
-        )}
+        {tooltip && (() => {
+          const flipLeft = tooltip.x + 90 > innerWidth
+          const tx = flipLeft ? tooltip.x - 8 : tooltip.x + 8
+          const anchor = flipLeft ? 'end' : 'start'
+          return (
+            <g data-testid="tooltip">
+              <line
+                x1={tooltip.x}
+                x2={tooltip.x}
+                y1={0}
+                y2={innerHeight}
+                stroke="#8A5A2B"
+                strokeWidth={1}
+                strokeDasharray="4 2"
+                strokeOpacity={0.7}
+              />
+              <circle
+                cx={tooltip.x}
+                cy={tooltip.y}
+                r={5}
+                fill="#8A5A2B"
+                stroke="#fff"
+                strokeWidth={2}
+              />
+              <text
+                x={tx}
+                y={tooltip.y - 12}
+                fontSize={15}
+                fill="#1C2430"
+                fontWeight="bold"
+                textAnchor={anchor}
+              >
+                {tooltip.year}
+              </text>
+              <text
+                x={tx}
+                y={tooltip.y + 8}
+                fontSize={14}
+                fill="#6B6F4E"
+                textAnchor={anchor}
+              >
+                {tooltip.production.toLocaleString()}
+              </text>
+            </g>
+          )
+        })()}
       </g>
     </svg>
   )

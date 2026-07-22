@@ -102,6 +102,7 @@ export function ChoroplethMap({
       {features.map((feature) => {
         const daneCode = feature.properties.DPTO_CCDGO
         const departmentName = feature.properties.DPTO_CNMBR
+        const hasData = productionByDane.has(daneCode)
         const production = productionByDane.get(daneCode) ?? 0
         const isProtagonist = highlightDaneCodes.includes(daneCode)
         const isHovered = hoveredDane === daneCode
@@ -117,9 +118,9 @@ export function ChoroplethMap({
             fill={isHovered ? '#8A5A2B' : colorScale(production)}
             stroke={isHovered ? '#1C2430' : '#fff'}
             strokeWidth={isHovered ? 2.5 : isProtagonist ? 2 : 0.5}
-            style={{ transition: 'fill 300ms ease' }}
+            style={{ transition: 'fill 300ms ease', cursor: hasData ? 'pointer' : 'default' }}
             aria-label={`${departmentName}: ${production.toLocaleString()} toneladas`}
-            onMouseEnter={(e) => {
+            onMouseEnter={hasData ? (e) => {
               setHoveredDane(daneCode)
               if (!hasInteracted) setHasInteracted(true)
               const { left = 0, top = 0 } = svgRef.current?.getBoundingClientRect() ?? {}
@@ -129,11 +130,11 @@ export function ChoroplethMap({
                 name: departmentName,
                 production,
               })
-            }}
-            onMouseLeave={() => {
+            } : undefined}
+            onMouseLeave={hasData ? () => {
               setHoveredDane(null)
               setTip(null)
-            }}
+            } : undefined}
           />
         )
       })}
