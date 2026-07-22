@@ -174,11 +174,17 @@ export function Scrollytelling({
 
   // D3 geo projection + path generator for choropleth.
   const geoPathGenerator = useMemo(() => {
-    // d3-geo's fitSize expects ExtendedFeatureCollection (with optional bbox/crs).
-    // Our domain type is a plain FeatureCollection — structurally compatible at runtime.
+    // Exclude San Andrés (DANE 88) from fitSize: the island is far northwest of the
+    // mainland and distorts the projection, pushing continental Colombia off-center.
+    const continentalFeatures = {
+      ...geoFeatures,
+      features: geoFeatures.features.filter(
+        (f) => f.properties.DPTO_CCDGO !== '88',
+      ),
+    }
     const projection = geoMercator().fitSize(
       [mapWidth, mapHeight],
-      geoFeatures as unknown as ExtendedFeatureCollection,
+      continentalFeatures as unknown as ExtendedFeatureCollection,
     )
     return geoPath(projection)
   }, [geoFeatures, mapWidth, mapHeight])
