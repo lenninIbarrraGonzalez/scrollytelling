@@ -25,7 +25,8 @@ import { motion } from 'framer-motion'
 import { scaleLinear } from 'd3'
 import type { SlopeDatum } from '../../../domain/coffee'
 
-const MARGIN = { top: 40, right: 120, bottom: 20, left: 120 }
+const MARGIN_SIDE_WIDE = 120
+const MARGIN_SIDE_NARROW = 100
 
 const PROTAGONIST_STROKE = '#8A5A2B'
 const PROTAGONIST_STROKE_WIDTH = 2
@@ -53,6 +54,10 @@ export function SlopeChart({
   yearB,
   highlightDaneCodes = [],
 }: SlopeChartProps) {
+  const marginSide = width < 400 ? MARGIN_SIDE_NARROW : MARGIN_SIDE_WIDE
+  const MARGIN = { top: 40, right: marginSide, bottom: 20, left: marginSide }
+  const labelFontSize = width < 400 ? 11 : 14
+
   const leftX = MARGIN.left
   const rightX = width - MARGIN.right
 
@@ -143,7 +148,7 @@ export function SlopeChart({
               y={yA}
               textAnchor="end"
               dominantBaseline="middle"
-              fontSize={14}
+              fontSize={labelFontSize}
               fontWeight={fontWeight}
               fill={isProtagonist ? PROTAGONIST_STROKE : '#6B6F4E'}
             >
@@ -155,7 +160,7 @@ export function SlopeChart({
               y={yB}
               textAnchor="start"
               dominantBaseline="middle"
-              fontSize={14}
+              fontSize={labelFontSize}
               fontWeight={fontWeight}
               fill={isProtagonist ? PROTAGONIST_STROKE : '#6B6F4E'}
             >

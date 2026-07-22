@@ -14,7 +14,7 @@ body {
 }
 
 .scrollytelling-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.4rem, 5vw, 2.5rem);
   font-weight: 700;
   color: #4B1E23;
   margin: 0;
@@ -83,23 +83,47 @@ body {
   margin: 0;
 }
 
-/* Responsive: stack columns vertically on narrow viewports */
+/* Mobile: sticky mini-viz at top, all chapter text always visible */
 @media (max-width: 768px) {
+  /* Switch from CSS Grid to block so position:sticky on viz works within the full scroll height */
   .scrollytelling-grid {
-    grid-template-columns: 1fr;
+    display: block;
+    padding: 0;
   }
 
-  /* On mobile: visualization goes on top, in normal flow (not sticky) */
+  /* Sticky mini-viz: stays at top as user scrolls through chapter text */
   .scrollytelling-viz-column {
-    position: static;
-    height: auto;
-    order: -1; /* Move to top */
-    padding-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    height: 45vh;
+    z-index: 10;
+    background-color: #E6E0D6;
     border-bottom: 1px solid #cdc9be;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
 
+  .scrollytelling-text-column {
+    padding: 0 0.75rem;
+  }
+
+  /* Each chapter needs enough height for IntersectionObserver to fire reliably
+     with the wider '-25% 0px -25% 0px' rootMargin (50% trigger zone) */
   .scrollytelling-chapter-section {
-    min-height: auto;
-    padding: 3rem 0;
+    min-height: 55vh;
+    padding: 2rem 0;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .scrollytelling-chapter-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .scrollytelling-chapter-section p {
+    font-size: 1rem;
+    line-height: 1.6;
   }
 }

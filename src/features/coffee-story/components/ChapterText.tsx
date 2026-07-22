@@ -16,6 +16,7 @@ import type { Chapter } from '../../../domain/coffee'
 interface ChapterTextProps {
   chapter: Chapter
   isActive: boolean
+  alwaysVisible?: boolean
 }
 
 const variants = {
@@ -24,7 +25,19 @@ const variants = {
   exit: { opacity: 0, y: -20 },
 }
 
-export function ChapterText({ chapter, isActive }: ChapterTextProps) {
+export function ChapterText({ chapter, isActive, alwaysVisible = false }: ChapterTextProps) {
+  if (alwaysVisible) {
+    return (
+      <div
+        data-testid="chapter-text"
+        style={{ opacity: isActive ? 1 : 0.45, transition: 'opacity 0.4s ease' }}
+      >
+        <h2>{chapter.title}</h2>
+        <p>{chapter.body}</p>
+      </div>
+    )
+  }
+
   return (
     <AnimatePresence mode="wait">
       {isActive && (

@@ -30,12 +30,7 @@ import { ChapterText } from './ChapterText'
 import { buildScatterData, buildSlopeData, buildWeightedYieldSeries, SLOPE_TOP_N } from '../selectors/coffeeSelectors'
 import './Scrollytelling.css'
 
-// Default SVG dimensions — consistent across all chapters.
-const VIZ_WIDTH = 600
-const VIZ_HEIGHT = 500
-// Choropleth map gets more vertical space to show Colombia's elongated shape.
-const MAP_WIDTH = 640
-const MAP_HEIGHT = 560
+const SIDE_PADDING = 16
 
 interface ScrollytellingProps {
   chapters: Chapter[]
@@ -59,6 +54,31 @@ export function Scrollytelling({
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  const vizColumnRef = useRef<HTMLDivElement>(null)
+  const [vizColumnWidth, setVizColumnWidth] = useState(0)
+  useEffect(() => {
+    const el = vizColumnRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(([entry]) => {
+      setVizColumnWidth(entry.contentRect.width)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  const vizWidth  = vizColumnWidth > 0 ? Math.min(vizColumnWidth - SIDE_PADDING, 600) : 600
+  const vizHeight = Math.round(vizWidth * (5 / 6))
+  const mapWidth  = vizColumnWidth > 0 ? Math.min(vizColumnWidth - SIDE_PADDING, 640) : 640
+  const mapHeight = Math.round(mapWidth * (7 / 8))
+
   const sentinelRefs = useMemo(() => {
     const map = new Map<string, RefObject<HTMLElement | null>>()
     return map
@@ -77,7 +97,12 @@ export function Scrollytelling({
   }
 
   // Register the IntersectionObserver — the sole writer to the store.
-  useActiveChapter(chapters, refsContainer.current)
+  // On mobile, use a wider trigger zone (50%) so the shorter chapter sections fire reliably.
+  useActiveChapter(
+    chapters,
+    refsContainer.current,
+    isMobile ? '-25% 0px -25% 0px' : '-45% 0px -45% 0px',
+  )
 
   // Derive the active chapter object (falls back to first chapter when null).
   const activeChapter = chapters.find((ch) => ch.id === activeChapterId) ?? chapters[0]
@@ -136,8 +161,8 @@ export function Scrollytelling({
 
   const { colorScale } = useD3Scales({
     domainExtent: productionExtent,
-    xRange: [0, VIZ_WIDTH],
-    yRange: [VIZ_HEIGHT, 0],
+    xRange: [0, vizWidth],
+    yRange: [vizHeight, 0],
   })
 
   // D3 geo projection + path generator for choropleth.
@@ -145,11 +170,11 @@ export function Scrollytelling({
     // d3-geo's fitSize expects ExtendedFeatureCollection (with optional bbox/crs).
     // Our domain type is a plain FeatureCollection — structurally compatible at runtime.
     const projection = geoMercator().fitSize(
-      [MAP_WIDTH, MAP_HEIGHT],
+      [mapWidth, mapHeight],
       geoFeatures as unknown as ExtendedFeatureCollection,
     )
     return geoPath(projection)
-  }, [geoFeatures])
+  }, [geoFeatures, mapWidth, mapHeight])
 
   return (
     <>
@@ -162,17 +187,17 @@ export function Scrollytelling({
       data-testid="scrollytelling-grid"
       className="scrollytelling-grid"
     >
-      <div className="scrollytelling-viz-column">
+      <div ref={vizColumnRef} className="scrollytelling-viz-column">
         <StickyVisualization
           nationalSeries={nationalSeries}
           departmentSeries={chapterDepartmentSeries}
           geoFeatures={geoFeatures as { features: Feature<Geometry, DepartmentGeoProperties>[] }}
           colorScale={colorScale}
           geoPath={geoPathGenerator}
-          width={VIZ_WIDTH}
-          height={VIZ_HEIGHT}
-          mapWidth={MAP_WIDTH}
-          mapHeight={MAP_HEIGHT}
+          width={vizWidth}
+          height={vizHeight}
+          mapWidth={mapWidth}
+          mapHeight={mapHeight}
           activeViz={activeViz}
           highlightDaneCodes={highlightDaneCodes}
           annotations={annotations}
@@ -201,6 +226,7 @@ export function Scrollytelling({
             <ChapterText
               chapter={chapter}
               isActive={chapter.id === activeChapterId}
+              alwaysVisible={isMobile}
             />
           </div>
         ))}

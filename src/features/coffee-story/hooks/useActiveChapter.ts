@@ -22,6 +22,7 @@ import { useScrollStore } from '../store/scrollStore'
 export function useActiveChapter(
   chapters: Chapter[],
   sentinelRefs: Map<string, RefObject<HTMLElement | null>>,
+  rootMargin = '-45% 0px -45% 0px',
 ): void {
   const setActiveChapter = useScrollStore((s) => s.setActiveChapter)
 
@@ -42,7 +43,7 @@ export function useActiveChapter(
         }
       },
       {
-        rootMargin: '-45% 0px -45% 0px',
+        rootMargin,
         threshold: 0,
       },
     )
@@ -58,5 +59,5 @@ export function useActiveChapter(
     return () => {
       observer.disconnect()
     }
-  }, [chapters, sentinelRefs, setActiveChapter])
+  }, [chapters, sentinelRefs, setActiveChapter, rootMargin])
 }
