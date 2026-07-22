@@ -115,4 +115,4 @@ Built under **Spec-Driven Development (SDD)** with strict TDD:
 
 ## License
 
-Private portfolio project. Not licensed for redistribution.
+MIT © Lenin Ibarra
