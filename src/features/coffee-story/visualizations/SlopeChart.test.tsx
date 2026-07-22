@@ -79,14 +79,14 @@ describe('SlopeChart', () => {
       />,
     )
 
-    // Protagonist paths get stroke="#6b4c11", non-protagonists get "#aaa"
+    // Protagonist paths get stroke="#8A5A2B", non-protagonists get "rgba(107,111,78,0.55)"
     const huilaPath = document.querySelector('path[data-dane-code="41"]')
     const outrPath = document.querySelector('path[data-dane-code="99"]')
 
     expect(huilaPath).not.toBeNull()
     expect(outrPath).not.toBeNull()
 
-    expect(huilaPath?.getAttribute('stroke')).toBe('#6b4c11')
-    expect(outrPath?.getAttribute('stroke')).toBe('#aaa')
+    expect(huilaPath?.getAttribute('stroke')).toBe('#8A5A2B')
+    expect(outrPath?.getAttribute('stroke')).toBe('rgba(107,111,78,0.55)')
   })
 })

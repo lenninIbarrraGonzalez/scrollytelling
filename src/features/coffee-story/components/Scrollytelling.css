@@ -3,6 +3,11 @@
  * 2-column grid on desktop; stacked on mobile (< 768 px).
  */
 
+body {
+  background-color: #E6E0D6;
+  margin: 0;
+}
+
 .scrollytelling-header {
   text-align: center;
   padding: 2rem 1rem 1rem;
@@ -11,7 +16,7 @@
 .scrollytelling-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #2c1810;
+  color: #4B1E23;
   margin: 0;
 }
 
@@ -24,7 +29,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: #6b4c11;
+  color: #8A5A2B;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -66,7 +71,7 @@
 .scrollytelling-chapter-section h2 {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #2c1810;
+  color: #4B1E23;
   margin: 0 0 1rem;
   line-height: 1.25;
 }
@@ -74,7 +79,7 @@
 .scrollytelling-chapter-section p {
   font-size: 1.15rem;
   line-height: 1.7;
-  color: #3a2a1a;
+  color: #1C2430;
   margin: 0;
 }
 
@@ -90,7 +95,7 @@
     height: auto;
     order: -1; /* Move to top */
     padding-bottom: 1rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #cdc9be;
   }
 
   .scrollytelling-chapter-section {

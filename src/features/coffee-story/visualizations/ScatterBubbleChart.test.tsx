@@ -65,9 +65,9 @@ describe('ScatterBubbleChart', () => {
     expect(huilaCircle).not.toBeNull()
     expect(otroCircle).not.toBeNull()
 
-    // Protagonists have stroke="#6b4c11", non-protagonists have stroke="#ccc"
-    expect(huilaCircle?.getAttribute('stroke')).toBe('#6b4c11')
-    expect(otroCircle?.getAttribute('stroke')).toBe('#ccc')
+    // Protagonists have stroke="#8A5A2B", non-protagonists have stroke="rgba(107,111,78,0.5)"
+    expect(huilaCircle?.getAttribute('stroke')).toBe('#8A5A2B')
+    expect(otroCircle?.getAttribute('stroke')).toBe('rgba(107,111,78,0.5)')
   })
 
   it('shows tooltip on mouseenter and hides on mouseleave', () => {

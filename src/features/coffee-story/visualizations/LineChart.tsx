@@ -154,8 +154,8 @@ export function LineChart({
     >
       <defs>
         <linearGradient id={GRADIENT_ID} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6b4c11" stopOpacity={0.35} />
-          <stop offset="100%" stopColor="#6b4c11" stopOpacity={0} />
+          <stop offset="0%" stopColor="#8A5A2B" stopOpacity={0.35} />
+          <stop offset="100%" stopColor="#8A5A2B" stopOpacity={0} />
         </linearGradient>
       </defs>
 
@@ -167,7 +167,7 @@ export function LineChart({
               x2={innerWidth}
               y1={y}
               y2={y}
-              stroke="#ddd"
+              stroke="#cdc9be"
               strokeOpacity={0.7}
               strokeDasharray="3 3"
             />
@@ -177,7 +177,7 @@ export function LineChart({
               textAnchor="end"
               dominantBaseline="middle"
               fontSize={14}
-              fill="#666"
+              fill="#6B6F4E"
             >
               {label}
             </text>
@@ -191,7 +191,7 @@ export function LineChart({
             y={innerHeight + 20}
             textAnchor="middle"
             fontSize={14}
-            fill="#666"
+            fill="#6B6F4E"
           >
             {label}
           </text>
@@ -202,7 +202,7 @@ export function LineChart({
           y={-45}
           textAnchor="middle"
           fontSize={15}
-          fill="#555"
+          fill="#6B6F4E"
           transform={`rotate(-90)`}
         >
           Toneladas
@@ -213,7 +213,7 @@ export function LineChart({
           y={innerHeight + 38}
           textAnchor="middle"
           fontSize={15}
-          fill="#555"
+          fill="#6B6F4E"
         >
           Año
         </text>
@@ -228,7 +228,7 @@ export function LineChart({
             data-testid="line-path"
             d={lineD}
             fill="none"
-            stroke="#6b4c11"
+            stroke="#8A5A2B"
             strokeWidth={2}
             initial={{ pathLength: 0 }}
             animate={{ pathLength: animated ? 1 : 0 }}
@@ -246,8 +246,8 @@ export function LineChart({
 
           return (
             <g key={ann.year} role="img" aria-label={ann.label}>
-              <circle cx={x} cy={y} r={5} fill="#c0392b" />
-              <text x={x + 8} y={y - 8} fontSize={13} fill="#c0392b">
+              <circle cx={x} cy={y} r={5} fill="#4B1E23" />
+              <text x={x + 8} y={y - 8} fontSize={13} fill="#4B1E23">
                 {ann.label}
               </text>
             </g>
@@ -260,7 +260,7 @@ export function LineChart({
             y={innerHeight + 30}
             textAnchor="middle"
             fontSize={10}
-            fill="#555"
+            fill="#6B6F4E"
           >
             {sourceLabel}
           </text>
@@ -273,7 +273,7 @@ export function LineChart({
               x2={tooltip.x}
               y1={0}
               y2={innerHeight}
-              stroke="#6b4c11"
+              stroke="#8A5A2B"
               strokeWidth={1}
               strokeDasharray="4 2"
               strokeOpacity={0.7}
@@ -282,7 +282,7 @@ export function LineChart({
               cx={tooltip.x}
               cy={tooltip.y}
               r={5}
-              fill="#6b4c11"
+              fill="#8A5A2B"
               stroke="#fff"
               strokeWidth={2}
             />
@@ -290,7 +290,7 @@ export function LineChart({
               x={tooltip.x + 8}
               y={tooltip.y - 12}
               fontSize={15}
-              fill="#333"
+              fill="#1C2430"
               fontWeight="bold"
             >
               {tooltip.year}
@@ -299,7 +299,7 @@ export function LineChart({
               x={tooltip.x + 8}
               y={tooltip.y + 8}
               fontSize={14}
-              fill="#555"
+              fill="#6B6F4E"
             >
               {tooltip.production.toLocaleString()}
             </text>

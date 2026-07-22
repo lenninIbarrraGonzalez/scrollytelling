@@ -23,12 +23,12 @@ import type { ScatterDatum } from '../../../domain/coffee'
 
 const MARGIN = { top: 20, right: 30, bottom: 50, left: 60 }
 
-const PROTAGONIST_STROKE = '#6b4c11'
+const PROTAGONIST_STROKE = '#8A5A2B'
 const PROTAGONIST_STROKE_WIDTH = 2
-const OTHER_STROKE = '#ccc'
+const OTHER_STROKE = 'rgba(107,111,78,0.5)'
 const OTHER_STROKE_WIDTH = 1
-const PROTAGONIST_FILL = 'rgba(107,76,17,0.6)'
-const OTHER_FILL = 'rgba(150,150,150,0.4)'
+const PROTAGONIST_FILL = 'rgba(138,90,43,0.6)'
+const OTHER_FILL = 'rgba(107,111,78,0.25)'
 
 type TooltipState = {
   x: number
@@ -102,7 +102,7 @@ export function ScatterBubbleChart({
               x2={innerWidth}
               y1={y}
               y2={y}
-              stroke="#ddd"
+              stroke="#cdc9be"
               strokeOpacity={0.7}
               strokeDasharray="3 3"
             />
@@ -112,7 +112,7 @@ export function ScatterBubbleChart({
               textAnchor="end"
               dominantBaseline="middle"
               fontSize={14}
-              fill="#666"
+              fill="#6B6F4E"
             >
               {label}
             </text>
@@ -126,7 +126,7 @@ export function ScatterBubbleChart({
             y={innerHeight + 20}
             textAnchor="middle"
             fontSize={14}
-            fill="#666"
+            fill="#6B6F4E"
           >
             {label}
           </text>
@@ -137,7 +137,7 @@ export function ScatterBubbleChart({
           y={innerHeight + 44}
           textAnchor="middle"
           fontSize={15}
-          fill="#555"
+          fill="#6B6F4E"
         >
           Área cosechada (ha)
         </text>
@@ -147,7 +147,7 @@ export function ScatterBubbleChart({
           y={-48}
           textAnchor="middle"
           fontSize={15}
-          fill="#555"
+          fill="#6B6F4E"
           transform="rotate(-90)"
         >
           Rendimiento (t/ha)
@@ -196,21 +196,21 @@ export function ScatterBubbleChart({
               width={185}
               height={90}
               rx={4}
-              fill="white"
-              stroke="#ccc"
+              fill="#E6E0D6"
+              stroke="#cdc9be"
               strokeWidth={1}
               opacity={0.95}
             />
-            <text fontSize={15} fontWeight="bold" fill="#333" y={0}>
+            <text fontSize={15} fontWeight="bold" fill="#1C2430" y={0}>
               {tooltip.datum.department}
             </text>
-            <text fontSize={14} fill="#555" y={20}>
+            <text fontSize={14} fill="#6B6F4E" y={20}>
               {fmtNum(tooltip.datum.production)} t
             </text>
-            <text fontSize={14} fill="#555" y={38}>
+            <text fontSize={14} fill="#6B6F4E" y={38}>
               {fmtNum(tooltip.datum.areaHarvested)} ha
             </text>
-            <text fontSize={14} fill="#555" y={56}>
+            <text fontSize={14} fill="#6B6F4E" y={56}>
               {tooltip.datum.yield.toFixed(2)} t/ha
             </text>
           </g>

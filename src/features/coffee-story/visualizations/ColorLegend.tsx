@@ -40,7 +40,7 @@ export function ColorLegend({
   return (
     <g>
       {label && (
-        <text x={width / 2} y={-4} textAnchor="middle" fontSize={10} fill="#555">
+        <text x={width / 2} y={-4} textAnchor="middle" fontSize={10} fill="#6B6F4E">
           {label}
         </text>
       )}

@@ -7,7 +7,7 @@
  * - ZERO d3.select / .append / .attr / d3.transition calls.
  *
  * Each year is a vertical stem (line from baseline to value) topped
- * by a circle, all in the café brown (#6b4c11). Tooltip via useState.
+ * by a circle, all in the café brown (#8A5A2B). Tooltip via useState.
  */
 
 import { useMemo, useState } from 'react'
@@ -68,7 +68,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
               x2={innerWidth}
               y1={y}
               y2={y}
-              stroke="#ddd"
+              stroke="#cdc9be"
               strokeOpacity={0.7}
               strokeDasharray="3 3"
             />
@@ -78,7 +78,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
               textAnchor="end"
               dominantBaseline="middle"
               fontSize={14}
-              fill="#666"
+              fill="#6B6F4E"
             >
               {label}
             </text>
@@ -92,7 +92,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
             y={innerHeight + 20}
             textAnchor="middle"
             fontSize={14}
-            fill="#666"
+            fill="#6B6F4E"
           >
             {label}
           </text>
@@ -103,7 +103,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
           y={-42}
           textAnchor="middle"
           fontSize={15}
-          fill="#555"
+          fill="#6B6F4E"
           transform="rotate(-90)"
         >
           t/ha
@@ -114,7 +114,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
           y={innerHeight + 42}
           textAnchor="middle"
           fontSize={15}
-          fill="#555"
+          fill="#6B6F4E"
         >
           Año
         </text>
@@ -130,7 +130,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
                 x2={x}
                 y1={innerHeight}
                 y2={y}
-                stroke="#6b4c11"
+                stroke="#8A5A2B"
                 strokeWidth={1.5}
                 initial={{ y2: innerHeight }}
                 animate={{ y2: y }}
@@ -141,7 +141,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
                 cx={x}
                 cy={y}
                 r={5}
-                fill="#6b4c11"
+                fill="#8A5A2B"
                 stroke="#fff"
                 strokeWidth={1.5}
                 initial={{ scale: 0 }}
@@ -163,8 +163,8 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
               width={110}
               height={46}
               rx={4}
-              fill="#fff"
-              stroke="#ddd"
+              fill="#E6E0D6"
+              stroke="#cdc9be"
               strokeWidth={1}
             />
             <text
@@ -172,7 +172,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
               y={tooltip.y - 26}
               textAnchor="middle"
               fontSize={15}
-              fill="#333"
+              fill="#1C2430"
               fontWeight="bold"
             >
               {tooltip.year}
@@ -182,7 +182,7 @@ export function LollipopChart({ data, width, height }: LollipopChartProps) {
               y={tooltip.y - 8}
               textAnchor="middle"
               fontSize={14}
-              fill="#555"
+              fill="#6B6F4E"
             >
               {tooltip.yield.toFixed(2)} t/ha
             </text>

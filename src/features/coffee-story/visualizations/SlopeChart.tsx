@@ -14,8 +14,8 @@
  *   Year labels at the top of each column.
  *
  * Protagonist DANE codes: ['05','17','41','63','66','73']
- *   stroke="#6b4c11" strokeWidth=2 label fontWeight=700
- *   Others: stroke="#aaa" strokeWidth=1 label fontWeight=400
+ *   strokeWidth=2 label fontWeight=700
+ *   Others: strokeWidth=1 label fontWeight=400
  *
  * Framer Motion motion.path — pathLength 0→1 stagger animation.
  */
@@ -27,10 +27,10 @@ import type { SlopeDatum } from '../../../domain/coffee'
 
 const MARGIN = { top: 40, right: 120, bottom: 20, left: 120 }
 
-const PROTAGONIST_STROKE = '#6b4c11'
+const PROTAGONIST_STROKE = '#8A5A2B'
 const PROTAGONIST_STROKE_WIDTH = 2
 const PROTAGONIST_FONT_WEIGHT = 700
-const OTHER_STROKE = '#aaa'
+const OTHER_STROKE = 'rgba(107,111,78,0.55)'
 const OTHER_STROKE_WIDTH = 1
 const OTHER_FONT_WEIGHT = 400
 
@@ -81,7 +81,7 @@ export function SlopeChart({
         textAnchor="middle"
         fontSize={16}
         fontWeight={600}
-        fill="#333"
+        fill="#1C2430"
       >
         {yearA}
       </text>
@@ -91,7 +91,7 @@ export function SlopeChart({
         textAnchor="middle"
         fontSize={16}
         fontWeight={600}
-        fill="#333"
+        fill="#1C2430"
       >
         {yearB}
       </text>
@@ -101,7 +101,7 @@ export function SlopeChart({
         x2={leftX}
         y1={MARGIN.top}
         y2={MARGIN.top + innerHeight}
-        stroke="#e0e0e0"
+        stroke="#cdc9be"
         strokeWidth={1}
       />
       <line
@@ -109,7 +109,7 @@ export function SlopeChart({
         x2={rightX}
         y1={MARGIN.top}
         y2={MARGIN.top + innerHeight}
-        stroke="#e0e0e0"
+        stroke="#cdc9be"
         strokeWidth={1}
       />
 
@@ -145,7 +145,7 @@ export function SlopeChart({
               dominantBaseline="middle"
               fontSize={14}
               fontWeight={fontWeight}
-              fill={isProtagonist ? PROTAGONIST_STROKE : '#555'}
+              fill={isProtagonist ? PROTAGONIST_STROKE : '#6B6F4E'}
             >
               {d.department}
             </text>
@@ -157,7 +157,7 @@ export function SlopeChart({
               dominantBaseline="middle"
               fontSize={14}
               fontWeight={fontWeight}
-              fill={isProtagonist ? PROTAGONIST_STROKE : '#555'}
+              fill={isProtagonist ? PROTAGONIST_STROKE : '#6B6F4E'}
             >
               {d.department}
             </text>

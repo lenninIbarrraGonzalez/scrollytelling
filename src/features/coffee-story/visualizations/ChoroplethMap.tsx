@@ -74,7 +74,7 @@ export function ChoroplethMap({
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 10,
-            background: 'rgba(44, 24, 16, 0.78)',
+            background: 'rgba(75, 30, 35, 0.85)',
             color: '#fff',
             fontSize: '0.7rem',
             letterSpacing: '0.07em',
@@ -114,8 +114,8 @@ export function ChoroplethMap({
             key={daneCode}
             data-dane-code={daneCode}
             d={pathD}
-            fill={isHovered ? '#d4a96b' : colorScale(production)}
-            stroke={isHovered ? '#333' : '#fff'}
+            fill={isHovered ? '#8A5A2B' : colorScale(production)}
+            stroke={isHovered ? '#1C2430' : '#fff'}
             strokeWidth={isHovered ? 2.5 : isProtagonist ? 2 : 0.5}
             style={{ transition: 'fill 300ms ease' }}
             aria-label={`${departmentName}: ${production.toLocaleString()} toneladas`}
@@ -153,10 +153,10 @@ export function ChoroplethMap({
             fillOpacity={0.9}
             rx={3}
           />
-          <text x={8} y={0} fontSize={15} fontWeight="bold">
+          <text x={8} y={0} fontSize={15} fontWeight="bold" fill="#1C2430">
             {tip.name}
           </text>
-          <text x={8} y={18} fontSize={14} fill="#555">
+          <text x={8} y={18} fontSize={14} fill="#6B6F4E">
             {tip.production.toLocaleString('en-US')} toneladas
           </text>
         </g>

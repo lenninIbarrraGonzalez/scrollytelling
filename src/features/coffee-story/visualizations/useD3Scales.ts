@@ -13,7 +13,7 @@
  */
 
 import { useMemo } from 'react'
-import { scaleLinear, scaleSequential, interpolateOrRd } from 'd3'
+import { scaleLinear, scaleSequential, interpolateRgb } from 'd3'
 
 export interface D3ScalesInput {
   /** [min, max] of the production/value domain. */
@@ -40,6 +40,8 @@ export interface D3ScalesOutput {
 export function useD3Scales({ domainExtent, xRange, yRange }: D3ScalesInput): D3ScalesOutput {
   const xScale = useMemo(
     () => scaleLinear().domain(domainExtent).range(xRange),
+    // Spread to individual values: the caller re-creates the array reference each render
+    // with identical values, which would trigger unnecessary recomputes if we listed the array.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [domainExtent[0], domainExtent[1], xRange[0], xRange[1]],
   )
@@ -51,7 +53,7 @@ export function useD3Scales({ domainExtent, xRange, yRange }: D3ScalesInput): D3
   )
 
   const colorScale = useMemo(
-    () => scaleSequential((t: number) => interpolateOrRd(Math.pow(t, 0.4))).domain(domainExtent),
+    () => scaleSequential((t: number) => interpolateRgb('#E6E0D6', '#4B1E23')(Math.pow(t, 0.4))).domain(domainExtent),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [domainExtent[0], domainExtent[1]],
   )
